@@ -303,7 +303,45 @@ $$\Delta_{\text{puntos}} > 0 \iff v_{\text{precio}} > v_{\text{divisa}}$$
 
 ---
 
-## 9. Matriz de Casos de Prueba Límite para Certificación QA (`E-QA`)
+## 9. Algoritmo de Matching Canónico y Umbrales de Zona Gris (HU-08 / HU-10 / Anexo B)
+
+### 9.1 Justificación y Pipeline de Similitud
+Para asociar automáticamente publicaciones extraídas a un producto canónico sin generar falsos positivos (como asociar un televisor de 55" con uno de 65" o café soluble con café en grano):
+* El motor calcula un **score de confianza normalizado** $S \in [0.00, 1.00]$.
+* El score consolida: correspondencia exacta de marca/modelo ($40\%$), coincidencia de contenido neto normalizado ($30\%$) y similitud semántica o tokenizada del título ($30\%$).
+
+### 9.2 Umbrales Matemáticos de Clasificación
+Sea $S$ el score de similitud calculado para un par $(\text{publicación\_extraída}, \text{producto\_canónico})$:
+
+$$S = w_{\text{marca}} \cdot s_{\text{marca}} + w_{\text{contenido}} \cdot s_{\text{contenido}} + w_{\text{texto}} \cdot s_{\text{texto}}$$
+
+$$\text{Decisión Algorítmica} = \begin{cases}
+\text{APROBACIÓN AUTOMÁTICA (Banda Alta)} & \text{si } S \ge 0.85 \\
+\text{ZONA GRIS (Revisión Humana Obligatoria)} & \text{si } 0.41 \le S \le 0.84 \\
+\text{DESCARTE AUTOMÁTICO (Banda Baja)} & \text{si } S \le 0.40
+\end{cases}$$
+
+* **Regla de Inmutabilidad de la Zona Gris (HU-10):** Ninguna propuesta que caiga en el rango $0.41 \le S \le 0.84$ puede confirmarse automáticamente en la base de datos ni exponerse como serie activa en el tablero sin la aprobación explícita de un analista humano vía el endpoint `POST /api/v1/matching/approve`.
+
+---
+
+## 10. Rigor Terminológico Macroeconómico y Estándar de Redondeo (RN-08)
+
+### 10.1 Prohibición del Término "Inflación Real" sin Calificar
+Queda estrictamente prohibido utilizar la frase "inflación real" en títulos de pantallas, respuestas JSON de la API o reportes sin especificar de cuál de los tres cálculos se trata:
+1. **Variación Acumulada en Pesos ($v_{\text{pesos}}$):** Variación porcentual nominal del precio regular en moneda local (ARS).
+2. **Variación Acumulada en USD ($v_{\text{usd}}$):** Variación porcentual del precio convertido a dólares, informando obligatoriamente la cotización de cierre aplicada (ej. Dólar Blue).
+3. **Diferencial vs. Devaluación ($\Delta_{\text{puntos}}$):** Puntos porcentuales netos de diferencia entre el aumento de precios y la variación cambiaria.
+
+### 10.2 Estándar de Redondeo y Tolerancia Numérica
+Para asegurar consistencia total entre Backend, Base de Datos y Frontend:
+* **Montos Monetarios Nominales:** Se redondean a **2 decimales** utilizando el método *Round Half to Even* (Redondeo Bancario) o *Round Half Up* estándar bancario: `ROUND(valor, 2)`.
+* **Precios por Unidad Métrica ($/kg, $/L):** Se calculan y conservan a **4 decimales** (`NUMERIC(14, 4)`), redondeando a 2 decimales solo en la capa final de presentación UI.
+* **Variaciones Porcentuales e Indicadores:** Se redondean estrictamente a **1 o 2 decimales** según el contrato de API (`quantize(Decimal('0.01'))`), evitando colas infinitas de decimales periódicos (`5.33333333%` $\rightarrow$ `5.33%`).
+
+---
+
+## 11. Matriz de Casos de Prueba Límite para Certificación QA (`E-QA`)
 
 Esta matriz detalla los escenarios de prueba unitaria y de integración que la célula de calidad (`E-QA`) debe automatizar y verificar para emitir la conformidad técnica del sistema.
 
@@ -318,3 +356,6 @@ Esta matriz detalla los escenarios de prueba unitaria y de integración que la c
 | **TC-MATH-07** | Downsampling (HU-47)| Consulta temporal sobre rango de 180 días (6 meses). | Backend agrupa con `agg_precios_semanales`, emitiendo `~26` puntos con flag `downsampling_aplicado: true`. | Rendimiento validado a 60 FPS en navegador. |
 | **TC-MATH-08** | Precio Métrica (HU-16)| Café molido Marca A con empaque de 500g ($0.5\text{ kg}$) vendido a \$12.000 ARS en pack `x1`. | $\text{Precio por Unidad} = \frac{12000}{0.5} = \$24.000,00/\text{kg}$. | Normalización a unidad base correcta. |
 | **TC-MATH-09** | Paginación (HU-46) | Petición a `/alerts` con parámetro `limit=100`. | Servidor rechaza con HTTP 422 RFC 7807 indicando exceso del máximo permitido de 50. | Protección de memoria del cliente operativa. |
+| **TC-MATH-10** | Zona Gris (HU-10) | Publicación extraída con score $S = 0.76$ frente a un canónico. | Se deriva a la cola de pendientes (`/api/v1/matching/pending`); no se auto-vincula. | Bloqueo de auto-matching en zona intermedia. |
+| **TC-MATH-11** | Diferencial (HU-28) | Precio sube $+25.0\%$, divisa sube $+20.0\%$. | $\Delta_{\text{puntos}} = +5.0 \text{ pts}$. Se emite alerta económica. | Disparo determinístico de alerta validado. |
+
