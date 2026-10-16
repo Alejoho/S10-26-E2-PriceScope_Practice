@@ -56,7 +56,7 @@ Identificador |	Célula de Trabajo |	Cupos |	Integrantes Asignados |	Responsabil
 --------------|-------------------|-------|-----------------------|--------------------------
 E-Scrapper | Extracción y Scraping | 3 | 1. Alejandro Hernández OReilly <br> 2. Anthony Ciprian <br> 3. Sebastian Torres | Desarrollo de scrapers diarios en Playwright/Scrapy para 4 tiendas piloto (Carrefour, Jumbo, Frávega, Musimundo), lectura de URLs desde seed.json y persistencia directa en lote (bulk insert) en PostgreSQL + TimescaleDB. La migración de ingesta hacia un endpoint HTTP se reserva como refactor condicional para Fase 1.5. |
 E-API | Backend, DB y Divisas | 2 | 1. Luis Feliz <br> 2. Yenny Castro | Modelado en PostgreSQL + TimescaleDB, endpoint receptor POST /ingest, ingesta horaria de cotizaciones (DolarAPI), cálculo de Cierre del Día (23:59:59), Mediana por categoría, paginación y downsampling. |
-E-F-UX/UI | Frontend y Experiencia | 1 | 1. Juan Camilo García | Arquitectura de interfaz en React, maquetación del Dashboard analítico, visualización interactiva (líneas y dispersión), filtros combinados, controles de paginación y conexión con API mocks y real. |
+E-F/UX/UI | Frontend y Experiencia | 1 | 1. Juan Camilo García | Arquitectura de interfaz en React, maquetación del Dashboard analítico, visualización interactiva (líneas y dispersión), filtros combinados, controles de paginación y conexión con API mocks y real. |
 E-QA | Aseguramiento de Calidad | 2 | 1. Gonzalo Cecchín <br> 2. Karina Luvianos | Diseño de planes de prueba y casos límite matemáticos (Mediana en pares/impares, descarte de valor 0), pruebas de estrés de catálogo (10.000+ productos) y validación de cortes de red. |
 
 ## 2. Arquitectura de Ingesta y Comunicación del Sistema
@@ -251,7 +251,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-01: Configurar Tiendas y Categorías del MVP vía Web
 * **Épica:** E1 — Captura e Ingesta Automatizada de Precios.
 * **Prioridad:** Could Have (Fase 1.5 — Buffer Condicional Semana 3-4).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Analista Interno.
 * **Quiero:** Dar de alta, editar y desactivar tiendas (URL base, tipo) y categorías desde una interfaz web.
 * **Para:** Administrar las fuentes de extracción del pipeline en caliente sin manipular archivos de configuración ni tocar código.
@@ -413,7 +413,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-10: Revisar Asociaciones Dudosas (Cola de Revisión de Zona Gris)
 * **Épica:** E2 — Normalización e Identidad de Productos.
 * **Prioridad:** Should Have (Fase 1.5 — Buffer Condicional Semana 3-4).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Analista Interno.
 * **Quiero:** Disponer de una interfaz visual con publicaciones con score intermedio para aprobar o descartar.
 * **Para:** Garantizar la pureza del catálogo evitando falsos positivos automáticos del matching.
@@ -569,7 +569,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-19: Reconstruir el Origen de un Indicador (Trazabilidad)
 * **Épica:** E4 — Series Históricas y Trazabilidad.
 * **Prioridad:** Must Have (Fase 1 — Semana 2).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Cliente Lector y Analista Interno.
 * **Quiero:** Consultar las observaciones de origen, fecha de captura y tasa cambiaria detrás de cada número.
 * **Para:** Respaldar y auditar los resultados frente a comités de inversión.
@@ -743,7 +743,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-29: Exponer Fechas Base y Cobertura Muestral
 * **Épica:** E7 — Indicadores Económicos y Cálculos.
 * **Prioridad:** Must Have (Fase 1 — Semana 2).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Cliente Lector.
 * **Quiero:** Conocer el rango de fechas utilizado y el porcentaje de cobertura muestral.
 * **Para:** Interpretar la solidez estadística antes de tomar decisiones corporativas.
@@ -795,7 +795,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-32: Visualizar la Evolución de Precios en Pesos y Dólares
 * **Épica:** E8 — Tablero B2B y Visualización de Series.
 * **Prioridad:** Must Have (Fase 1 — Semana 1-2).
-* **Célula Responsable:** `E-F-UX/UI`.
+* **Célula Responsable:** `E-F/UX/UI`.
 * **Como:** Cliente Lector.
 * **Quiero:** Visualizar la evolución temporal de los precios en moneda local y USD sobre gráficos interactivos.
 * **Para:** Contrastar visualmente el impacto de la devaluación sobre las listas de precios.
@@ -812,7 +812,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-33: Filtrar por Período, Tienda, Categoría y Moneda
 * **Épica:** E8 — Tablero B2B y Visualización de Series.
 * **Prioridad:** Must Have (Fase 1 — Semana 2).
-* **Célula Responsable:** `E-F-UX/UI`.
+* **Célula Responsable:** `E-F/UX/UI`.
 * **Como:** Cliente Lector.
 * **Quiero:** Aplicar filtros multidimensionales y combinables en la cabecera del tablero.
 * **Para:** Enfocar el análisis en segmentos de negocio o ventanas temporales específicas.
@@ -829,7 +829,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-34: Visualizar Capa de Precio Regular vs. Promocional
 * **Épica:** E8 — Tablero B2B y Visualización de Series.
 * **Prioridad:** Should Have (Fase 2 — Mejoras Post-MVP).
-* **Célula Responsable:** `E-F-UX/UI`.
+* **Célula Responsable:** `E-F/UX/UI`.
 * **Como:** Cliente Lector.
 * **Quiero:** Observar los precios con descuento como puntos destacados sobre la línea regular.
 * **Para:** Identificar ofertas transitorias sin perder de vista la tendencia central de los precios.
@@ -847,7 +847,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-35: Ver Ficha de Trazabilidad por Producto
 * **Épica:** E8 — Tablero B2B y Visualización de Series.
 * **Prioridad:** Must Have (Fase 1 — Semana 2-3).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Cliente Lector y Analista Interno.
 * **Quiero:** Acceder a un panel lateral o modal con la auditoría completa de un producto.
 * **Para:** Verificar la fuente original, cotización aplicada y estado del dato de cada registro.
@@ -864,7 +864,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-36: Representar Agotados, Páginas Caídas y Faltantes (Banda de Calidad)
 * **Épica:** E8 — Tablero B2B y Visualización de Series.
 * **Prioridad:** Must Have (Fase 1 — Semana 2).
-* **Célula Responsable:** `E-F-UX/UI`.
+* **Célula Responsable:** `E-F/UX/UI`.
 * **Como:** Cliente Lector.
 * **Quiero:** Distinguir visualmente un agotado, un error técnico y una omisión de datos en el gráfico.
 * **Para:** No interpretar quiebres de stock o problemas de red como caídas de precio a cero.
@@ -884,7 +884,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-37: Alerta cuando el Precio Sube Más que la Devaluación
 * **Épica:** E9 — Detección de Alertas e Hitos Económicos.
 * **Prioridad:** Must Have (Fase 1 — Semana 3).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Cliente Lector.
 * **Quiero:** Visualizar una lista de productos cuya subida porcentual excede el alza del tipo de cambio.
 * **Para:** Detectar artículos con incrementos reales en moneda dura y ajustar listas de compra.
@@ -901,7 +901,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-38: Registrar y Visualizar Hitos (CyberWeek y Cambios de Producto/Tienda)
 * **Épica:** E9 — Detección de Alertas e Hitos Económicos.
 * **Prioridad:** Must Have (Fase 1 — Semana 3).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Cliente Lector.
 * **Quiero:** Observar marcadores visuales sobre la gráfica temporal ante eventos comerciales o estructurales.
 * **Para:** Explicar fluctuaciones de precios derivadas de CyberWeek, reduflación o cambios de portal.
@@ -918,7 +918,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-39: Detalle Contextual y Explicativo de Alertas
 * **Épica:** E9 — Detección de Alertas e Hitos Económicos.
 * **Prioridad:** Must Have (Fase 1 — Semana 3).
-* **Célula Responsable:** `E-F-UX/UI`.
+* **Célula Responsable:** `E-F/UX/UI`.
 * **Como:** Cliente Lector.
 * **Quiero:** Que cada alerta presente una explicación clara de su fundamento numérico.
 * **Para:** Comprender la causa del aviso sin asumir interpretaciones imprecisas.
@@ -937,7 +937,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-40: Aprobar o Rechazar la Exclusión de un Outlier
 * **Épica:** E10 — Curaduría, Auditoría y Configuración.
 * **Prioridad:** Could Have (Fase 2 — Mejoras Post-MVP).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Analista Interno.
 * **Quiero:** Decidir manualmente si una observación marcada como atípica se excluye del motor de cálculo.
 * **Para:** Prevenir distorsiones en los índices agregados sin eliminar el registro histórico forense.
@@ -1024,7 +1024,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-45: Alertar Desactualización o Caída del Pipeline
 * **Épica:** E11 — Observabilidad del Pipeline.
 * **Prioridad:** Must Have (Fase 1 — Semana 3).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Analista Interno.
 * **Quiero:** Recibir una advertencia visual si no se registraron corridas durante las últimas 24 horas.
 * **Para:** Evitar la publicación de información obsoleta bajo apariencia de monitoreo en tiempo real.
@@ -1043,7 +1043,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-46: Paginación Obligatoria en Tablas y Alertas
 * **Épica:** E12 — Rendimiento, Escalabilidad y Protección de Interfaz.
 * **Prioridad:** Must Have (Fase 1 — Semana 1-2).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Frontend y Navegador del Cliente.
 * **Quiero:** Exigir parámetros de paginación (`?page=1&limit=50`) en todos los endpoints que retornen listados.
 * **Para:** Evitar el *over-fetching* y el bloqueo del hilo principal de JavaScript (*Main Thread*) con catálogos de 10.000+ productos.
@@ -1061,7 +1061,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 #### HU-47: Downsampling Algorítmico en Gráficos de Series Temporales
 * **Épica:** E12 — Rendimiento, Escalabilidad y Protección de Interfaz.
 * **Prioridad:** Must Have (Fase 1 — Semana 1-2).
-* **Célula Responsable:** `E-API` / `E-F-UX/UI`.
+* **Célula Responsable:** `E-API` / `E-F/UX/UI`.
 * **Como:** Frontend y Navegador del Cliente.
 * **Quiero:** Que el backend reduzca la densidad de puntos en series mayores a 3 meses a un máximo de 1 punto por semana mediante la mediana.
 * **Para:** Proteger la memoria de la aplicación, evitar gráficos con manchas ilegibles y garantizar un renderizado fluido a 60 FPS en el navegador.
@@ -1140,16 +1140,16 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 | Caso de Uso (CU) | Nombre del Proceso Funcional | Historias de Usuario Asociadas (HU) | Células Involucradas |
 | :--- | :--- | :--- | :--- |
 | **CU-01** | Ingesta y Captura Diaria de Precios | HU-00, HU-01, HU-02, HU-03, HU-04, HU-05, HU-06 | `E-Scrapper`, `E-API` |
-| **CU-02** | Normalización y Matching Canónico | HU-07, HU-08, HU-09, HU-10, HU-11 | `E-API`, `E-F-UX/UI` |
+| **CU-02** | Normalización y Matching Canónico | HU-07, HU-08, HU-09, HU-10, HU-11 | `E-API`, `E-F/UX/UI` |
 | **CU-03** | Clasificación de Precios, Stock y Reduflación | HU-12, HU-13, HU-14, HU-15, HU-16 | `E-Scrapper`, `E-API` |
 | **CU-04** | Ingesta y Validación de Divisas | HU-20, HU-21, HU-22 | `E-API` |
 | **CU-05** | Conversión Temporal y Cierre Cambiario | HU-23, HU-24, HU-25 | `E-API` |
 | **CU-06** | Cálculo de Variaciones y Mediana por Categoría | HU-26, HU-27, HU-28, HU-29, HU-30, HU-31 | `E-API` |
-| **CU-07** | Visualización en Dashboard, Gráficas y Filtros | HU-32, HU-33, HU-34, HU-35, HU-36 | `E-F-UX/UI`, `E-API` |
-| **CU-08** | Detección y Exposición de Alertas e Hitos | HU-37, HU-38, HU-39 | `E-API`, `E-F-UX/UI` |
-| **CU-09** | Curaduría y Auditoría de Datos | HU-40, HU-41, HU-42 | `E-API`, `E-F-UX/UI` |
-| **CU-10** | Monitoreo Operativo y Calidad del Pipeline | HU-43, HU-44, HU-45 | `E-Scrapper`, `E-API`, `E-F-UX/UI` |
-| **CU-11** | Optimización, Paginación y Rendimiento UI | HU-46, HU-47 | `E-API`, `E-F-UX/UI`, `E-QA` |
+| **CU-07** | Visualización en Dashboard, Gráficas y Filtros | HU-32, HU-33, HU-34, HU-35, HU-36 | `E-F/UX/UI`, `E-API` |
+| **CU-08** | Detección y Exposición de Alertas e Hitos | HU-37, HU-38, HU-39 | `E-API`, `E-F/UX/UI` |
+| **CU-09** | Curaduría y Auditoría de Datos | HU-40, HU-41, HU-42 | `E-API`, `E-F/UX/UI` |
+| **CU-10** | Monitoreo Operativo y Calidad del Pipeline | HU-43, HU-44, HU-45 | `E-Scrapper`, `E-API`, `E-F/UX/UI` |
+| **CU-11** | Optimización, Paginación y Rendimiento UI | HU-46, HU-47 | `E-API`, `E-F/UX/UI`, `E-QA` |
 
 ---
 
