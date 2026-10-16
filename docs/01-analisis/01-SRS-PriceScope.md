@@ -82,17 +82,18 @@ flowchart TD
     %% Célula de Calidad
     QA["E-QA<br/>Control de<br/> Calidad E2E<br/>Pruebas de <br/>Estres y Limites"]
 
-    %% Conexiones Directas MVP
+    %% Conexiones Directas MVP y Phasing
     ECOM -->|Extraccion Diaria| SCRAP
-    SCRAP -->|Bulk Insert Directo<br/>en Hypertable| DB
+    SCRAP -->|Fase 1: Bulk Insert Directo<br/>en Hypertable| DB
+    SCRAP -.->|"Fase 1.5: POST /ingest/observations (Refactor Condicional)"| API
     FIN -->|Ingesta Horaria| API
     API -->|Persistencia de Cotizaciones| DB
     DB -->|Lectura de Series<br/>y Agregaciones| API
     API -->|Endpoints JSON<br/>/dashboard y /alerts| UI
 
     %% Conexiones de QA corregidas
-    QA -. "Validacion E2E<br/>y Rendimiento 60 FPS" .-> UI
-    QA -. "Casos Limite<br/>Matematicos y TTL 72h" .-> API
+    QA -.->|"Validacion E2E y Rendimiento 60 FPS"| UI
+    QA -.->|"Casos Limite Matematicos y TTL 72h"| API
 
     %% Estilos Visuales
     classDef extern fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#0f172a;
@@ -107,9 +108,9 @@ flowchart TD
 ```
 
 ### Estructura del Objeto de Extracción (DTO de Ingesta)
-El equipo `E-Scrapper` genera y envía este payload JSON a la API por cada lote recolectado:
+El equipo `E-Scrapper` estructura y procesa las observaciones mediante este payload JSON por cada lote recolectado:
 
-> "Nota de Arquitectura: Este esquema JSON define la estructura de datos que genera el extractor. Durante la Fase 1 (MVP), los scrapers mapean este objeto directamente a las sentencias de inserción masiva (INSERT) en la tabla observaciones_precios de PostgreSQL/TimescaleDB. Si el avance de la Semana 2 o 3 lo permite, el backend habilitará la ruta POST /api/v1/ingest/observations para desacoplar el acceso a la base de datos."
+> "Nota de Arquitectura y Mapeo: Este esquema JSON define la estructura de datos que genera el extractor. Durante la **Fase 1 (MVP Esencial)**, los scrapers mapean este objeto directamente a las sentencias de inserción masiva (`bulk insert`) en la tabla `observaciones_precios` de PostgreSQL/TimescaleDB (donde el campo `estado_captura` se almacena físicamente en la columna `estado_dato`). Si el avance de la Semana 3 o 4 lo permite (**Fase 1.5 Buffer Condicional**), el backend habilitará la ruta `POST /api/v1/ingest/observations` para desacoplar el acceso a la base de datos vía HTTP sin modificar la estructura del payload."
 
 ```json
 {
