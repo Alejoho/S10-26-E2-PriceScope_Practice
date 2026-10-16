@@ -16,9 +16,10 @@
 | **Proyecto** | PriceScope — Monitor de Inflación Real Multimoneda |
 | **Organización / Programa** | Simulación Laboral Abierta — NoCountry |
 | **Sector de Negocio** | FinTech / Analítica Económica (B2B Analytics) |
-| **Versión** | 1.0 (Oficial para Revisión y Aprobación Técnica) |
+| **Versión** | 1.1 (Oficial para Revisión y Aprobación Técnica) |
 | **Fecha de Emisión** | 16 de Octubre de 2026 |
 | **Ubicación en Repositorio** | `docs/01-analisis/02-API-Contracts-OpenAPI.md` |
+| **Documentos Vinculantes** | `01-SRS-PriceScope.md`, `03-Data-Model-TimescaleDB.md`, `04-Business-Rules-Math-Logic.md` |
 | **Estado** | En Revisión y Aprobación Técnica por Células Operativas |
 
 ---
@@ -38,13 +39,9 @@ La firma de este apartado formaliza los esquemas JSON y endpoints como contrato 
 | Rol Operativo | Célula de Trabajo | Integrante Asignado | Estado de Revisión | Firma / Fecha |
 | :--- | :--- | :--- | :--- | :--- |
 | **Frontend Lead & UX/UI** | `E-F/UX/UI` | Juan Camilo García | Aprobado | 16/10/2026 |
-| **Backend & Base de Datos** | `E-API` | Luis Feliz | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
-| **Backend & Motor Divisas** | `E-API` | Yenny Castro | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
-| **Extracción y Scraper Core** | `E-Scrapper` | Alejandro Hernández OReilly | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
-| **Extracción y Scraper** | `E-Scrapper` | Anthony Ciprian | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
-| **Extracción y Scraper** | `E-Scrapper` | Sebastian Torres | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
+| **Backend Lead (`E-API`)** | `E-API` | Luis Feliz | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
+| **Scraping Lead (`E-Scrapper`)** | `E-Scrapper` | Alejandro Hernández OReilly | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
 | **Tech Lead / PO Review** | `E-QA` | Gonzalo Cecchín | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
-| **Analista QA** | `E-QA` | Karina Luvianos | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
 
 ---
 
