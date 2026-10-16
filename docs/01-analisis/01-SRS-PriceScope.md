@@ -67,31 +67,34 @@ El flujo de información se desacopla a través de la API para garantizar la val
 flowchart TD
     %% Fuentes Externas
     subgraph Fuentes ["Fuentes Externas"]
-        ECOM["Portales E-Commerce<br/>• Carrefour<br/>• Jumbo<br/>• Frávega<br/>• Musimundo"]
-        FIN["APIs Financieras<br/>• DolarAPI<br/>• Bluelytics<br/>• Cotización <br>Oficial y Blue"]
+        ECOM["Portales E-Commerce<br/>- Carrefour<br/>- Jumbo<br/>- Fravega<br/>- Musimundo"]
+        FIN["APIs Financieras<br/>- DolarAPI<br/>- Bluelytics<br/>- Cotizacion <br/>Oficial y <br/>Blue"]
     end
 
     %% Pipeline Interno
-    subgraph Core ["PriceScope — Monorepo"]
-        SCRAP["E-Scrapper<br/>Scraping Diario <br>Programado<br/>(Playwright <br>/ Scrapy)"]
-        API["E-API (Backend)<br/>Validación <br>de DTOs<br/>Cálculos <br>(Mediana /<br> Cierre UTC)"]
-        DB[("TimescaleDB<br/>PostgreSQL <br>Hypertable<br/>(Series <br>Temporales)")]
-        UI["E-F-UX/UI<br/>Dashboard <br>Ejecutivo React<br/>(Gráficos <br>y Filtros)"]
+    subgraph Core ["PriceScope - Monorepo"]
+        SCRAP["E-Scrapper<br/>Scraping Diario <br/>Programado<br/>(Playwright / <br/>Scrapy)"]
+        DB[("TimescaleDB<br/>PostgreSQL Hypertable<br/>Series <br/>Temporales")]
+        API["E-API (Backend)<br/>Calculos <br/>(Mediana / <br/>Cierre UTC)<br/>Endpoints Lectura GET"]
+        UI["E-F/UX/UI<br/>Dashboard <br/>Ejecutivo React<br/>(Graficos y<br/> Filtros)"]
     end
 
     %% Célula de Calidad
-    QA["E-QA<br/>Control de <br>Calidad E2E<br/>Pruebas de <br>Estrés y Límites"]
+    QA["E-QA<br/>Control de<br/> Calidad E2E<br/>Pruebas de <br/>Estres y Limites"]
 
-    %% Conexiones con saltos de línea para evitar cortes
-    ECOM -->|Extracción Diaria<br/>de Publicaciones| SCRAP
-    FIN -->|Ingesta Horaria<br/>de Divisas| API
-    SCRAP -->|HTTP POST en Lote<br/>/api/v1/ingest/observations| API
-    API -->|Bulk Insert<br/>en Hypertable| DB
-    DB -->|Endpoints JSON<br/>/dashboard · /alerts| UI
-    QA -.->|Validación E2E<br/>y Rendimiento 60 FPS| UI
-    QA -.->|Casos Límite<br/>Matemáticos y TTL 72h| API
+    %% Conexiones Directas MVP
+    ECOM -->|Extraccion Diaria| SCRAP
+    SCRAP -->|Bulk Insert Directo<br/>en Hypertable| DB
+    FIN -->|Ingesta Horaria| API
+    API -->|Persistencia de Cotizaciones| DB
+    DB -->|Lectura de Series<br/>y Agregaciones| API
+    API -->|Endpoints JSON<br/>/dashboard y /alerts| UI
 
-    %% Estilos Visuales y Colores por Capa
+    %% Conexiones de QA corregidas
+    QA -. "Validacion E2E<br/>y Rendimiento 60 FPS" .-> UI
+    QA -. "Casos Limite<br/>Matematicos y TTL 72h" .-> API
+
+    %% Estilos Visuales
     classDef extern fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#0f172a;
     classDef core fill:#eff6ff,stroke:#2563eb,stroke-width:1.5px,color:#1e3a8a;
     classDef db fill:#ecfdf5,stroke:#059669,stroke-width:1.5px,color:#065f46;
