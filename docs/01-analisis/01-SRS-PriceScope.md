@@ -19,6 +19,7 @@
 | **Versión** | 1.0 (Oficial Aprobada para Desarrollo) |
 | **Fecha de Emisión** | 16 de Octubre de 2026 |
 | **Ubicación en Repositorio** | `docs/01-analisis/01-SRS-PriceScope.md` |
+| **Documentos Vinculantes** | `02-API-Contracts-OpenAPI.md`, `03-Data-Model-TimescaleDB.md`, `04-Business-Rules-Math-Logic.md` |
 | **Estado** | En Revisión y Aprobación Técnica |
 
 ---
