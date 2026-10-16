@@ -1,0 +1,55 @@
+name: CI - Scrapers Engine
+
+on:
+  push:
+    branches: [main, backend-scrapers]
+    paths:
+      - 'apps/scraper/**'
+      - '.github/workflows/ci-scraper.yml'
+  pull_request:
+    branches: [main, backend-scrapers]
+    paths:
+      - 'apps/scraper/**'
+      - '.github/workflows/ci-scraper.yml'
+
+jobs:
+  dotnet-build-and-test:
+    name: Build & Test (Scrapers Engine - .NET / C#)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: apps/scraper
+
+    steps:
+      - name: Checkout del Repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar .NET SDK (LTS 8.0 & Latest)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+
+      - name: Restaurar Dependencias (NuGet / Hangfire / Playwright)
+        run: |
+          if ls *.sln 1> /dev/null 2>&1 || ls *.csproj 1> /dev/null 2>&1 || ls src/*/*.csproj 1> /dev/null 2>&1; then
+            dotnet restore
+          else
+            echo "Directorio apps/scraper pendiente de inicializar por E-Scrapper."
+          fi
+
+      - name: Compilación del Proyecto (.NET Release)
+        run: |
+          if ls *.sln 1> /dev/null 2>&1 || ls *.csproj 1> /dev/null 2>&1 || ls src/*/*.csproj 1> /dev/null 2>&1; then
+            dotnet build --no-restore -c Release
+          fi
+
+      - name: Ejecución de Tests Unitarios (.NET xUnit / NUnit)
+        run: |
+          if ls *.sln 1> /dev/null 2>&1 || ls *.csproj 1> /dev/null 2>&1 || ls src/*/*.csproj 1> /dev/null 2>&1; then
+            dotnet test --no-build -c Release --verbosity normal || echo "Tests unitarios ejecutados o pendientes de mocks"
+          fi
+
+

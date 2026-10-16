@@ -1,0 +1,57 @@
+name: CI - Client Frontend
+
+on:
+  push:
+    branches: [main, frontend]
+    paths:
+      - 'apps/client/**'
+      - '.github/workflows/ci-client.yml'
+  pull_request:
+    branches: [main, frontend]
+    paths:
+      - 'apps/client/**'
+      - '.github/workflows/ci-client.yml'
+
+jobs:
+  lint-and-typecheck:
+    name: Lint & Typecheck (Frontend SPA)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: apps/client
+
+    steps:
+      - name: Checkout del Repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: 'npm'
+          cache-dependency-path: apps/client/package-lock.json
+
+      - name: Instalar Dependencias
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f package.json ]; then
+            npm install
+          else
+            echo "Directorio apps/client pendiente de inicializar por E-F/UX/UI"
+          fi
+
+      - name: Verificación de Tipos TypeScript (tsc)
+        run: |
+          if [ -f tsconfig.json ]; then
+            npx tsc --noEmit
+          else
+            echo "Sin tsconfig.json detectado aún."
+          fi
+
+      - name: Build de Producción (Vite / React)
+        run: |
+          if grep -q '"build"' package.json 2>/dev/null; then
+            npm run build
+          fi
