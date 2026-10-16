@@ -16,9 +16,10 @@
 | **Proyecto** | PriceScope — Monitor de Inflación Real Multimoneda |
 | **Organización / Programa** | Simulación Laboral Abierta — NoCountry |
 | **Sector de Negocio** | FinTech / Analítica Económica (B2B Analytics) |
-| **Versión** | 1.0 (Oficial Aprobada para Desarrollo) |
+| **Versión** | 1.1 (Oficial para Revisión y Aprobación Técnica) |
 | **Fecha de Emisión** | 16 de Octubre de 2026 |
 | **Ubicación en Repositorio** | `docs/01-analisis/03-Data-Model-TimescaleDB.md` |
+| **Documentos Vinculantes** | `01-SRS-PriceScope.md`, `02-API-Contracts-OpenAPI.md`, `04-Business-Rules-Math-Logic.md` |
 | **Estado** | En Revisión y Aprobación Técnica |
 
 ---
@@ -34,14 +35,13 @@
 | 1.1 | 2026-10-16 | Equipo PriceScope | Alineación total 100% con 01-SRS: formalización de la persistencia directa (bulk insert) sin API para Fase 1, mapeo explícito de `estado_captura` del DTO a la columna `estado_dato`, y equivalencia de `tipo_cambio_usado` (SRS HU-24) con `cotizacion_aplicada`. |
 
 ### ACTA DE APROBACIÓN TÉCNICA (SIGN-OFF)
-La firma de este apartado certifica el diseño del modelo de base de datos como vinculante para las células `E-API` y `E-Scrapper` durante el ciclo de desarrollo.
+La firma de este apartado certifica el diseño del modelo de base de datos como vinculante para las células técnicas que interactúan con el esquema de persistencia durante el ciclo de desarrollo.
 
-| Rol | Nombre | Estado | Firma / Fecha |
-| :--- | :--- | :--- | :--- |
-| Frontend Lead & UX/UI | Juan Camilo García | Aprobado | 16/10/2026 |
-| Backend & DB Lead (`E-API`) | Luis Feliz | Pendiente | [  /  / 2026 ] |
-| Scraping Lead (`E-Scrapper`) | Alejandro Hernández OReilly | Pendiente | [  /  / 2026 ] |
-| Tech Lead / QA Review | Gonzalo Cecchín | Pendiente | [  /  / 2026 ] |
+| Rol | Nombre | Célula | Estado | Firma / Fecha |
+| :--- | :--- | :--- | :--- | :--- |
+| **Backend & DB Lead** | Luis Feliz | `E-API` | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
+| **Scraping Lead** | Alejandro Hernández OReilly | `E-Scrapper` | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
+| **Tech Lead / PO Review** | Gonzalo Cecchín | `E-QA` | Pendiente | [ &nbsp;&nbsp;&nbsp;&nbsp; / &nbsp;&nbsp;&nbsp;&nbsp; / 2026 ] |
 
 ---
 
