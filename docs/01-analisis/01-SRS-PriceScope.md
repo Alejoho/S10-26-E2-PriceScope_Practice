@@ -817,7 +817,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 * **Quiero:** Aplicar filtros multidimensionales y combinables en la cabecera del tablero.
 * **Para:** Enfocar el análisis en segmentos de negocio o ventanas temporales específicas.
 * **Criterios de Aceptación:**
-  * [ ] Filtros combinables por: rango temporal (1m, 3m, 1y), tienda, categoría y moneda.
+  * [ ] Filtros combinables por: rango temporal mediante presets (1m, 3m, 1y) o rango personalizado (fecha_desde y fecha_hasta), tienda, categoría y moneda.
   * [ ] Al aplicar un filtro, los KPIs y las gráficas se recalculan de forma dinámica.
   * [ ] La barra de filtros dispone de acción directa para restablecer o limpiar filtros.
 * **Datos de Prueba Sugeridos:**
