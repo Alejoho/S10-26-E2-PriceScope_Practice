@@ -50,7 +50,7 @@ Este documento establece el **manual algorítmico y matemático oficial** de Pri
 1. **Precisión Numérica en Almacenamiento y Cómputo:**
    * En base de datos PostgreSQL, los montos monetarios se almacenan bajo el tipo `NUMERIC(14, 2)` para precios nominales y `NUMERIC(14, 4)` para precios métricos por unidad normalizada.
    * Los tipos de cambio y cotizaciones de divisas utilizan `NUMERIC(12, 4)`.
-   * En memoria y capas de servicio Backend (Python/Node/Go), los cálculos se realizan utilizando aritmética decimal de punto fijo o de precisión arbitraria (equivalente a `Decimal` en Python o `BigDecimal`), **prohibiendo el uso de tipos de coma flotante estándar binarios (`float` o `double`) para operaciones monetarias acumuladas**, a fin de evitar errores de redondeo IEEE 754.
+   * En memoria y capas de servicio Backend en NestJS / TypeScript (`apps/api`), los cálculos se realizan utilizando aritmética decimal de punto fijo o de precisión arbitraria (mediante librerías como `decimal.js` o `bignumber.js`), **prohibiendo el uso de tipos de coma flotante estándar binarios (`float` o `double`) para operaciones monetarias acumuladas**, a fin de evitar errores de redondeo IEEE 754.
 2. **Determinismo Temporal en UTC:**
    * Toda estampa de tiempo interna se manipula en UTC bajo la norma ISO 8601 (`YYYY-MM-DDTHH:MM:SSZ`).
    * Los cierres contables y cambiarios se basan en una definición fija de fin de jornada del mercado local (23:59:59 ART = UTC-3).
@@ -104,29 +104,30 @@ $$\text{cobertura\_pct} = \left( \frac{N}{T_C} \right) \times 100$$
 
 Si $N = 0$, la API retorna `variacion_mediana_pct: null`, `cantidad_productos: 0`, `cobertura_pct: 0.0` y estado `SIN_DATOS_SUFICIENTES`.
 
-### 2.3 Pseudocódigo Oficial de Backend
+### 2.3 Implementación Oficial de Backend (TypeScript / NestJS)
 
-```python
-def calcular_mediana_categoria(variaciones: list[Decimal]) -> Decimal | None:
-    """
-    Calcula la variación porcentual acumulada de una categoría mediante la mediana.
-    Prohíbe estrictamente el promedio simple.
-    """
-    n = len(variaciones)
-    if n == 0:
-        return None
-    
-    # Ordenamiento ascendente determinístico
-    ordenados = sorted(variaciones)
-    
-    mitad = n // 2
-    if n % 2 != 0:
-        # Muestra impar: posición central exacta
-        return ordenados[mitad].quantize(Decimal('0.01'))
-    else:
-        # Muestra par: promedio aritmético de los dos valores centrales
-        mediana = (ordenados[mitad - 1] + ordenados[mitad]) / Decimal('2')
-        return mediana.quantize(Decimal('0.01'))
+```typescript
+import { Decimal } from 'decimal.js';
+
+export function calcularMedianaCategoria(variaciones: Decimal[]): Decimal | null {
+  const n = variaciones.length;
+  if (n === 0) {
+    return null;
+  }
+
+  // Ordenamiento ascendente determinístico sin mutar el arreglo original
+  const ordenados = [...variaciones].sort((a, b) => a.comparedTo(b));
+
+  const mitad = Math.floor(n / 2);
+  if (n % 2 !== 0) {
+    // Muestra impar: posición central exacta
+    return ordenados[mitad].toDecimalPlaces(2, Decimal.ROUND_HALF_UP);
+  } else {
+    // Muestra par: promedio aritmético de los dos valores centrales
+    const sumaCentral = ordenados[mitad - 1].plus(ordenados[mitad]);
+    return sumaCentral.dividedBy(2).toDecimalPlaces(2, Decimal.ROUND_HALF_UP);
+  }
+}
 ```
 
 ---

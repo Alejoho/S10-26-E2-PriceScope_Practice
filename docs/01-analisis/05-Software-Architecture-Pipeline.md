@@ -54,8 +54,8 @@ flowchart TD
         FIN["APIs Financieras<br/>(DolarAPI / Bluelytics)"]
     end
 
-    subgraph PipelineScraping ["Célula E-Scrapper (Python Worker)"]
-        SCRAP["Playwright / Scrapy Engine<br/>- Lectura de URLs seed.json<br/>- Extracción Diaria Programada"]
+    subgraph PipelineScraping ["Célula E-Scrapper (ASP.NET Core / .NET 10 + Hangfire)"]
+        SCRAP["Playwright .NET Engine<br/>- Lectura de URLs seed.json<br/>- Hangfire Scheduled Jobs & Retries"]
         DTO_VAL["Validador Anti-Cero (RN-04)<br/>y Normalizador Métrico"]
         SCRAP --> DTO_VAL
     end
@@ -68,7 +68,7 @@ flowchart TD
         HYPER_OBS -.-> AGG_MAT
     end
 
-    subgraph BackendAPI ["Célula E-API (FastAPI / Express Server)"]
+    subgraph BackendAPI ["Célula E-API (NestJS / TypeScript Server)"]
         CRON_DIV["Worker Cron Divisas<br/>(Ingesta Horaria)"]
         CLOSE_ENG["Motor Sincronizador Cierre<br/>(23:59:59 ART / TTL 72h)"]
         CALC_MED["Motor de Métricas & Mediana<br/>(RN-02 / HU-30 / LOCF)"]
@@ -78,7 +78,7 @@ flowchart TD
         CALC_MED --> API_ENDP
     end
 
-    subgraph FrontendSPA ["Célula E-F/UX/UI (React 18 + TypeScript + Vite)"]
+    subgraph FrontendSPA ["Célula E-F/UX/UI (Next.js / React + TypeScript)"]
         DASH_UI["Dashboard Ejecutivo B2B<br/>- Gráfica Temporal (60 FPS)<br/>- Filtros Multidimensionales<br/>- Semáforo Calidad de Datos"]
         ALERT_UI["Tabla Paginada de Alertas<br/>(Limit 50 / RFC 7807)"]
         TRACE_UI["Modal / Ficha Trazabilidad<br/>(Auditoría Forense)"]
@@ -188,7 +188,7 @@ sequenceDiagram
 
     Note over SC,DB: FASE 1: Inserción Masiva Directa
     SC->>SC: Lee URLs desde seed.json / alias_tienda
-    SC->>SC: Extrae publicaciones vía Playwright/Scrapy
+    SC->>SC: Extrae publicaciones vía Playwright .NET (Hangfire Job)
     SC->>SC: Valida regla Anti-Cero (null si agotado)
     SC->>DB: SQL BULK INSERT en observaciones_precios (Append-Only)
     
@@ -292,8 +292,8 @@ Dado que cada componente opera como un microservicio independiente, la arquitect
 
 ```mermaid
 flowchart LR
-    subgraph SrvScraper ["Servidor / VPS de Scraping (Python Runtime)"]
-        W_SCRAP["apps/scraper<br/>Worker Cron Playwright<br/>(Ej: Ubuntu VPS / AWS EC2)"]
+    subgraph SrvScraper ["Servidor / VPS de Scraping (.NET 10 Runtime)"]
+        W_SCRAP["apps/scraper<br/>Worker Hangfire + Playwright .NET<br/>(Ej: Ubuntu VPS / AWS EC2)"]
     end
 
     subgraph SrvDB ["Servidor de Base de Datos (TimescaleDB Cloud / VPS Dedicado)"]
@@ -301,11 +301,11 @@ flowchart LR
     end
 
     subgraph SrvBackend ["Servidor de API Backend (Container / PaaS)"]
-        B_API["apps/api<br/>FastAPI / Node Server<br/>(Ej: Render / Fly.io / AWS ECS)"]
+        B_API["apps/api<br/>NestJS Node Server<br/>(Ej: Render / Fly.io / AWS ECS)"]
     end
 
-    subgraph SrvFrontend ["CDN Edge Network (Frontend SPA)"]
-        F_SPA["apps/client<br/>React 18 Production Bundle<br/>(Ej: Vercel / Netlify / Cloudflare)"]
+    subgraph SrvFrontend ["CDN Edge Network (Frontend Next.js)"]
+        F_SPA["apps/client<br/>Next.js Production SSR / Static<br/>(Ej: Vercel / Netlify / Cloudflare)"]
     end
 
     W_SCRAP -->|"Fase 1: Conexión TCP/SSL 5432<br/>Bulk Insert Append-Only"| TDB
@@ -314,10 +314,10 @@ flowchart LR
 ```
 
 ### Matriz de Infraestructura por Microservicio
-* **`apps/client` (Frontend SPA):** Compilado estático optimizado servido a través de CDN global (Vercel / Cloudflare Pages) para latencia menor a 50ms en la entrega de assets.
-* **`apps/api` (Backend REST & Divisas):** Desplegado en un servidor de aplicaciones PaaS/Container (Render, Fly.io o AWS ECS) con escalado horizontal y variables de entorno seguras (`DATABASE_URL`, tokens de servicio).
-* **`apps/scraper` (Worker Extractor):** Alojado en un servidor independiente con capacidad para ejecutar navegadores headless (Playwright / Chromium) sin consumir CPU ni memoria del servidor de la API web.
-* **`timescaledb` (Capa de Persistencia):** Instancia dedicada de PostgreSQL 15 con la extensión TimescaleDB activada, accesible vía TLS/SSL restringido por whitelist de IPs (solo el servidor de scraping y el de backend tienen acceso al puerto 5432).
+* **`apps/client` (Frontend Next.js):** Aplicación Next.js servida a través de CDN global (Vercel / Cloudflare Pages) para latencia menor a 50ms en la entrega de assets interactivos.
+* **`apps/api` (Backend REST NestJS & Divisas):** Desplegado en un servidor de aplicaciones PaaS/Container (Render, Fly.io o AWS ECS) con escalado horizontal y variables de entorno seguras (`DATABASE_URL`, tokens de servicio).
+* **`apps/scraper` (Worker Hangfire & Playwright .NET):** Aplicación ASP.NET Core (.NET 10) alojada en un worker independiente con Hangfire Server y Playwright .NET para orquestar y reintentar ejecuciones headless de Chromium sin impactar el servidor de la API web.
+* **`timescaledb` (Capa de Persistencia):** Instancia dedicada de PostgreSQL 15 con la extensión TimescaleDB activada, accesible vía TLS/SSL restringido por whitelist de IPs (solo el worker de scraping y el backend tienen acceso al puerto 5432).
 
 ### Infraestructura Local para Desarrollo (`docker-compose.yml`)
 Para reproducir la base de datos de manera uniforme en local para los 8 desarrolladores:
@@ -353,7 +353,7 @@ Para optimizar recursos y evitar el agotamiento de cuotas en plataformas cloud g
 
 ### 8.1 Enfoque "Local-First" y Despliegue Escalonado
 1. **Fase 1 (Semanas 1 a 3 — Desarrollo y Validación en Local):**
-   * Todo el desarrollo, pruebas de scraping, cómputos de base de datos y maquetación web se ejecutan de manera local utilizando Docker Compose para la base de datos compartida y los entornos de ejecución locales de Node.js y Python.
+   * Todo el desarrollo, pruebas de scraping, cómputos de base de datos y maquetación web se ejecutan de manera local utilizando Docker Compose para la base de datos compartida y los entornos de ejecución locales de Node.js (Next.js / NestJS) y .NET SDK (.NET 10).
    * **Cero Consumo Cloud Innecesario:** No se despliegan contenedores ni servidores en la nube de forma prematura, previniendo problemas de *cold starts* (apagado por inactividad de 15 minutos en tiers gratuitos) y errores de memoria por ejecución de Chromium/Playwright.
 2. **Cierre de Fase 1 (Semana 3 — Despliegue del MVP Esencial):**
    * Una vez que el flujo funcional de punta a punta (Scraper $\rightarrow$ Base de Datos $\rightarrow$ API $\rightarrow$ Dashboard) esté 100% probado y certificado por QA en local, se realiza el **despliegue formal del MVP** a los servidores gratuitos (Vercel para `apps/client`, Render/Fly.io para `apps/api`, Timescale Cloud/Render PostgreSQL para persistencia).
@@ -365,9 +365,9 @@ Aunque el despliegue automático a la nube está programado para el hito de cier
 
 | Pipeline Workflow | Archivo | Triggers de Ruta (`paths`) | Validaciones Ejecutadas en CI |
 | :--- | :--- | :--- | :--- |
-| **CI - Client Frontend** | `.github/workflows/ci-client.yml` | `apps/client/**` | Validación de tipos TypeScript (`tsc --noEmit`), chequeo de dependencias limpias y compilación de producción con Vite (`npm run build`). |
-| **CI - API Backend** | `.github/workflows/ci-api.yml` | `apps/api/**` | Chequeo de sintaxis, verificación de compilación (NestJS/Express/FastAPI) y ejecución de tests unitarios matemáticos (Mediana, Cierre UTC, TTL 72h). |
-| **CI - Scrapers Engine** | `.github/workflows/ci-scraper.yml` | `apps/scraper/**` | Chequeo de sintaxis Python con `flake8` (detección de errores `E9,F63,F7,F82`), pruebas unitarias de parsers y estructura del DTO de extracción. |
+| **CI - Client Frontend** | `.github/workflows/ci-client.yml` | `apps/client/**` | Validación de tipos TypeScript (`tsc --noEmit`), chequeo de dependencias limpias y compilación de producción Next.js (`npm run build`). |
+| **CI - API Backend** | `.github/workflows/ci-api.yml` | `apps/api/**` | Chequeo de sintaxis/linter (`npm run lint`), compilación NestJS (`npm run build`) y ejecución de tests unitarios matemáticos (`npm test`). |
+| **CI - Scrapers Engine** | `.github/workflows/ci-scraper.yml` | `apps/scraper/**` | Restauración de paquetes NuGet, compilación en Release con .NET SDK (`dotnet build`), tests unitarios de parsers y validación del DTO de extracción. |
 
 ### 8.3 Gobernanza de Ramas y Pull Requests
 * **Protección Estricta de `main`:** Ningún integrante puede realizar `push` directo ni `force push`.

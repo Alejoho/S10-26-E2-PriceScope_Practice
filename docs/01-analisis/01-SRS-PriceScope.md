@@ -55,9 +55,9 @@ Para asegurar el avance simultáneo en el monorepo y evitar bloqueos, las tareas
 -----------------------------------------------------------------------------------------------
 Identificador |	Célula de Trabajo |	Cupos |	Integrantes Asignados |	Responsabilidad Principal
 --------------|-------------------|-------|-----------------------|--------------------------
-E-Scrapper | Extracción y Scraping | 3 | 1. Alejandro Hernández OReilly <br> 2. Anthony Ciprian <br> 3. Sebastian Torres | Desarrollo de scrapers diarios en Playwright/Scrapy para 4 tiendas piloto (Carrefour, Jumbo, Frávega, Musimundo), lectura de URLs desde seed.json y persistencia directa en lote (bulk insert) en PostgreSQL + TimescaleDB. La migración de ingesta hacia un endpoint HTTP se reserva como refactor condicional para Fase 1.5. |
-E-API | Backend, DB y Divisas | 2 | 1. Luis Feliz <br> 2. Yenny Castro | Modelado en PostgreSQL + TimescaleDB, endpoint receptor POST /ingest, ingesta horaria de cotizaciones (DolarAPI), cálculo de Cierre del Día (23:59:59), Mediana por categoría, paginación y downsampling. |
-E-F/UX/UI | Frontend y Experiencia | 1 | 1. Juan Camilo García | Arquitectura de interfaz en React, maquetación del Dashboard analítico, visualización interactiva (líneas y dispersión), filtros combinados, controles de paginación y conexión con API mocks y real. |
+E-Scrapper | Extracción y Scraping | 3 | 1. Alejandro Hernández OReilly <br> 2. Anthony Ciprian <br> 3. Sebastian Torres | Desarrollo de scrapers diarios en C# (ASP.NET Core / .NET 10 con Hangfire y Playwright .NET) para 4 tiendas piloto (Carrefour, Jumbo, Frávega, Musimundo), lectura de URLs desde seed.json y persistencia directa en lote (bulk insert) en PostgreSQL + TimescaleDB. La migración de ingesta hacia un endpoint HTTP se reserva como refactor condicional para Fase 1.5. |
+E-API | Backend, DB y Divisas | 2 | 1. Luis Feliz <br> 2. Yenny Castro | Modelado en PostgreSQL + TimescaleDB, desarrollo de API REST en NestJS (TypeScript), endpoint receptor POST /ingest, ingesta horaria de cotizaciones (DolarAPI), cálculo de Cierre del Día (23:59:59), Mediana por categoría, paginación y downsampling. |
+E-F/UX/UI | Frontend y Experiencia | 1 | 1. Juan Camilo García | Arquitectura de interfaz en Next.js (React / TypeScript), maquetación del Dashboard analítico, visualización interactiva (líneas y dispersión), filtros combinados, controles de paginación y conexión con API mocks y real. |
 E-QA | Aseguramiento de Calidad | 2 | 1. Gonzalo Cecchín <br> 2. Karina Luvianos | Diseño de planes de prueba y casos límite matemáticos (Mediana en pares/impares, descarte de valor 0), pruebas de estrés de catálogo (10.000+ productos) y validación de cortes de red. |
 
 ## 2. Arquitectura de Ingesta y Comunicación del Sistema
@@ -74,10 +74,10 @@ flowchart TD
 
     %% Pipeline Interno
     subgraph Core ["PriceScope - Monorepo"]
-        SCRAP["E-Scrapper<br/>Scraping Diario <br/>Programado<br/>(Playwright / <br/>Scrapy)"]
+        SCRAP["E-Scrapper (C# / .NET 10)<br/>Hangfire + Playwright<br/>Scraping Diario Programado"]
         DB[("TimescaleDB<br/>PostgreSQL Hypertable<br/>Series <br/>Temporales")]
-        API["E-API (Backend)<br/>Calculos <br/>(Mediana / <br/>Cierre UTC)<br/>Endpoints Lectura GET"]
-        UI["E-F/UX/UI<br/>Dashboard <br/>Ejecutivo React<br/>(Graficos y<br/> Filtros)"]
+        API["E-API (NestJS)<br/>Calculos <br/>(Mediana / <br/>Cierre UTC)<br/>Endpoints Lectura GET"]
+        UI["E-F/UX/UI (Next.js)<br/>Dashboard <br/>Ejecutivo React<br/>(Graficos y<br/> Filtros)"]
     end
 
     %% Célula de Calidad
@@ -284,7 +284,7 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 * **Datos de Prueba Sugeridos:**
   * Corrida normal → 4 tiendas procesadas exitosamente.
   * Falla simulada en 1 tienda → 3 tiendas OK y 1 tienda marcada como fallida en logs.
-* **Pantallas / Endpoints Involucrados:** Cron job / Worker de Playwright o Scrapy.
+* **Pantallas / Endpoints Involucrados:** Hangfire Dashboard / Worker de Playwright .NET en ASP.NET Core (`apps/scraper`).
 
 ---
 
