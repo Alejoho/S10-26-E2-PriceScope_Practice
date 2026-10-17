@@ -197,7 +197,7 @@ Toda la ingeniería del sistema se encuentra formalizada y versionada en la carp
   <thead>
     <tr>
       <th align="center">
-        <img src="docs/assets/team/juan-camilo-garcia.png" width="110" style="border-radius: 50%; object-fit: cover;" alt="Juan Camilo García"><br>
+        <img src="docs/assets/team/juan-camilo-garcia.png" width="100" height="100" style="border-radius: 50%; object-fit: cover;" alt="Juan Camilo García"><br>
         <strong>Juan Camilo García</strong><br>
         <sub>Frontend Lead & UX/UI Designer</sub>
       </th>
@@ -223,12 +223,12 @@ Toda la ingeniería del sistema se encuentra formalizada y versionada en la carp
   <thead>
     <tr>
       <th align="center">
-        <img src="docs/assets/isotipo.png" width="100" alt="Luis Feliz"><br>
+        <img src="docs/assets/team/luis-antonio-feliz.png" width="100" height="100" alt="Luis Feliz" style="border-radius: 50%; object-fit: cover;"><br>
         <strong>Luis Feliz</strong><br>
         <sub>Backend & DB Lead</sub>
       </th>
       <th align="center">
-        <img src="docs/assets/isotipo.png" width="100" alt="Yenny Castro"><br>
+        <img src="docs/assets/team/yenny-castro.png" width="100" height="100" alt="Yenny Castro" style="border-radius: 50%; object-fit: cover;"><br>
         <strong>Yenny Castro</strong><br>
         <sub>Backend Developer</sub>
       </th>
@@ -237,18 +237,18 @@ Toda la ingeniería del sistema se encuentra formalizada y versionada en la carp
   <tbody>
     <tr>
       <td align="center">
-        <a href="#" target="_blank">
+        <a href="https://www.linkedin.com/in/luis-antonio-feliz" target="_blank">
           <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
         </a><br>
-        <a href="#" target="_blank">
+        <a href="https://github.com/LuisAntonioFeliz" target="_blank">
           <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
         </a>
       </td>
       <td align="center">
-        <a href="#" target="_blank">
+        <a href="https://www.linkedin.com/in/alexandra-castro-web-developer" target="_blank">
           <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
         </a><br>
-        <a href="#" target="_blank">
+        <a href="https://github.com/YenCastro" target="_blank">
           <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
         </a>
       </td>
@@ -262,17 +262,17 @@ Toda la ingeniería del sistema se encuentra formalizada y versionada en la carp
   <thead>
     <tr>
       <th align="center">
-        <img src="docs/assets/isotipo.png" width="100" alt="Alejandro Hernández OReilly"><br>
+        <img src="docs/assets/team/alejandro-hernandez.png" width="100" height="100" alt="Alejandro Hernández OReilly" style="border-radius: 50%; object-fit: cover;"><br>
         <strong>Alejandro Hernández OReilly</strong><br>
         <sub>Scraper Lead (.NET / Playwright)</sub>
       </th>
       <th align="center">
-        <img src="docs/assets/isotipo.png" width="100" alt="Anthony Ciprian"><br>
+        <img src="docs/assets/team/anthony-ciprian.png" width="100" height="100" alt="Anthony Ciprian" style="border-radius: 50%; object-fit: cover;"><br>
         <strong>Anthony Ciprian</strong><br>
         <sub>Scraper Developer</sub>
       </th>
       <th align="center">
-        <img src="docs/assets/isotipo.png" width="100" alt="Sebastian Torres"><br>
+        <img src="docs/assets/isotipo.png" width="100" height="100" alt="Sebastian Torres" style="object-fit: contain;"><br>
         <strong>Sebastian Torres</strong><br>
         <sub>Scraper Developer</sub>
       </th>
@@ -281,18 +281,18 @@ Toda la ingeniería del sistema se encuentra formalizada y versionada en la carp
   <tbody>
     <tr>
       <td align="center">
-        <a href="#" target="_blank">
+        <a href="https://www.linkedin.com/in/alejandro-hern%C3%A1ndez-o-reilly-0a0929312" target="_blank">
           <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
         </a><br>
-        <a href="#" target="_blank">
+        <a href="https://github.com/Alejoho" target="_blank">
           <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
         </a>
       </td>
       <td align="center">
-        <a href="#" target="_blank">
+        <a href="https://www.linkedin.com/in/anthonyciprian" target="_blank">
           <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
         </a><br>
-        <a href="#" target="_blank">
+        <a href="https://github.com/stuart-ware" target="_blank">
           <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
         </a>
       </td>
@@ -314,12 +314,12 @@ Toda la ingeniería del sistema se encuentra formalizada y versionada en la carp
   <thead>
     <tr>
       <th align="center">
-        <img src="docs/assets/isotipo.png" width="100" alt="Gonzalo Cecchín"><br>
+        <img src="docs/assets/team/gonzalo-cecchin.png" width="100" height="100" alt="Gonzalo Cecchín" style="border-radius: 50%; object-fit: cover;"><br>
         <strong>Gonzalo Cecchín</strong><br>
         <sub>Tech Lead / Product Owner Review</sub>
       </th>
       <th align="center">
-        <img src="docs/assets/isotipo.png" width="100" alt="Karina Luvianos"><br>
+        <img src="docs/assets/team/karina-luvianos.png" width="100" height="100" alt="Karina Luvianos" style="border-radius: 50%; object-fit: cover;"><br>
         <strong>Karina Luvianos</strong><br>
         <sub>QA Analyst Lead</sub>
       </th>
@@ -328,18 +328,18 @@ Toda la ingeniería del sistema se encuentra formalizada y versionada en la carp
   <tbody>
     <tr>
       <td align="center">
-        <a href="#" target="_blank">
+        <a href="https://www.linkedin.com/in/gonzalo-cecch%C3%ADn" target="_blank">
           <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
         </a><br>
-        <a href="#" target="_blank">
+        <a href="https://github.com/QAGonzaloCecchin" target="_blank">
           <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
         </a>
       </td>
       <td align="center">
-        <a href="#" target="_blank">
+        <a href="https://www.linkedin.com/in/kluvianosta" target="_blank">
           <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
         </a><br>
-        <a href="#" target="_blank">
+        <a href="https://github.com/Luvitaka" target="_blank">
           <img src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
         </a>
       </td>
