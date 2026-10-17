@@ -17,15 +17,22 @@ jobs:
     name: Build & Test (Scrapers Engine - .NET / C#)
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: apps/scraper
-
     steps:
       - name: Checkout del Repositorio
         uses: actions/checkout@v4
 
-      - name: Configurar .NET SDK (LTS 8.0 & Latest)
+      - name: Verificar si existe apps/scraper
+        id: check_dir
+        run: |
+          if [ -d "apps/scraper" ] && ( ls apps/scraper/*.sln 1> /dev/null 2>&1 || ls apps/scraper/*.csproj 1> /dev/null 2>&1 || ls apps/scraper/src/*/*.csproj 1> /dev/null 2>&1 ); then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "apps/scraper no contiene solución/proyecto .NET aún. Omitiendo CI."
+          fi
+
+      - name: Configurar .NET SDK (LTS 8.0 & 9.0)
+        if: steps.check_dir.outputs.exists == 'true'
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
@@ -33,23 +40,19 @@ jobs:
             9.0.x
 
       - name: Restaurar Dependencias (NuGet / Hangfire / Playwright)
+        if: steps.check_dir.outputs.exists == 'true'
+        working-directory: apps/scraper
         run: |
-          if ls *.sln 1> /dev/null 2>&1 || ls *.csproj 1> /dev/null 2>&1 || ls src/*/*.csproj 1> /dev/null 2>&1; then
-            dotnet restore
-          else
-            echo "Directorio apps/scraper pendiente de inicializar por E-Scrapper."
-          fi
+          dotnet restore
 
       - name: Compilación del Proyecto (.NET Release)
+        if: steps.check_dir.outputs.exists == 'true'
+        working-directory: apps/scraper
         run: |
-          if ls *.sln 1> /dev/null 2>&1 || ls *.csproj 1> /dev/null 2>&1 || ls src/*/*.csproj 1> /dev/null 2>&1; then
-            dotnet build --no-restore -c Release
-          fi
+          dotnet build --no-restore -c Release
 
       - name: Ejecución de Tests Unitarios (.NET xUnit / NUnit)
+        if: steps.check_dir.outputs.exists == 'true'
+        working-directory: apps/scraper
         run: |
-          if ls *.sln 1> /dev/null 2>&1 || ls *.csproj 1> /dev/null 2>&1 || ls src/*/*.csproj 1> /dev/null 2>&1; then
-            dotnet test --no-build -c Release --verbosity normal || echo "Tests unitarios ejecutados o pendientes de mocks"
-          fi
-
-
+          dotnet test --no-build -c Release --verbosity normal || echo "Tests unitarios ejecutados o pendientes de mocks"
