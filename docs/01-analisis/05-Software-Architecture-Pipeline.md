@@ -144,16 +144,23 @@ pricescope-monorepo/
 │   ├── assets/                   # Recursos gráficos e imagotipos corporativos
 │   │   ├── imagotipo.png         # Logo horizontal oficial (símbolo + texto PriceScope)
 │   │   ├── isotipo.png           # Isotipo centrado / diamante con diana (favicon / icono)
-│   │   └── diagrams/             # Diagramas exportados (ERD, arquitectura, secuencias)
-│   ├── 01-analisis/              # Especificaciones formales del sistema
+│   │   ├── diagrams/             # Diagramas exportados (ERD, arquitectura, secuencias para slides)
+│   │   └── wireframes/           # Capturas @2x de pantallas base para documentación visual
+│   ├── 01-analisis/              # Especificaciones formales del sistema y diseño
 │   │   ├── 01-SRS-PriceScope.md
 │   │   ├── 02-API-Contracts-OpenAPI.md
 │   │   ├── 03-Data-Model-TimescaleDB.md
 │   │   ├── 04-Business-Rules-Math-Logic.md
 │   │   ├── 05-Software-Architecture-Pipeline.md
-│   │   └── 06-QA-Test-Matrix.md
-│   ├── 02-planeacion/            # Gestión del Proyecto y Cronograma (Roadmap, Matriz de Riesgos)
-│   └── 03-qa/                    # Certificación QA (Planes de prueba y pruebas de carga 10k+)
+│   │   ├── 06-QA-Test-Matrix.md
+│   │   └── 07-Frontend-UX-UI-Specs.md
+│   ├── 02-planeacion/            # Gestión del Proyecto, Cronograma y Contingencias
+│   │   ├── 01-Plan-Operativo-Roadmap.md
+│   │   └── 02-matriz-riesgos.md
+│   └── 03-qa/                    # Espacio de trabajo vivo para célula E-QA
+│       ├── README.md             # Guía operativa para evidencias y reportes de certificación
+│       ├── 01-matriz-casos-prueba.md   # Bitácora viva de ejecución de pruebas (Generado por E-QA)
+│       └── 02-reportes-stress-test.md  # Reportes de carga 10.000+ y rendimiento 60 FPS (Generado por E-QA)
 ├── seed.json                     # Archivo semilla MVP oficial (URLs piloto normalizadas HU-00)
 ├── docker-compose.yml            # Infraestructura local compartida (TimescaleDB / PostgreSQL)
 ├── .gitignore                    # Exclusión de node_modules, .venv, .env, cachés
