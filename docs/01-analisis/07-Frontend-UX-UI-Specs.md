@@ -44,6 +44,12 @@
 
 La experiencia de PriceScope está orientada a **analistas macroeconómicos, directores de finanzas (CFOs) y gerentes de compras (Procurement B2B)**. La interfaz debe transmitir **rigor técnico, sobriedad financiera, alta densidad de datos sin saturación y rendimiento de 60 FPS**.
 
+### 1.0 Stack de Componentes y UI Kit
+* **Framework:** **Next.js 14+ (App Router / React / TypeScript)**.
+* **Componentes Base y Accesibilidad:** **shadcn/ui** (construido sobre Radix UI Primitives y Tailwind CSS), garantizando componentes accesibles y totalmente personalizables (`Dialog`, `DropdownMenu`, `DateRangePicker`, `Table`, `Badge`, `Toggle`).
+* **Visualización de Datos & Gráficas:** **Tremor** (`@tremor/react`), librería nativa de analítica y finanzas sugerida formalmente por NoCountry, utilizada tanto para las tarjetas de KPI (`Card`, `Metric`, `Text`, `BadgeDelta`) como para el **motor de gráficos interactivos** (`LineChart`, `AreaChart`, `ScatterChart`), optimizado para renderizado fluido a 60 FPS con downsampling semanal.
+* **Iconografía:** **Lucide Icons** (`lucide-react`).
+
 ### 1.1 Paleta de Color Institucional y Semántica Financiera
 * **Colores Principales de Marca:**
   * `Primary Dark (Fondo Sidebar / Elementos Clave):` `#0F172A` (Slate 900)
@@ -266,7 +272,7 @@ Estas pantallas se incorporarán al diseño de Figma y a la maquetación en Next
 
 Para cumplir con la homologación de calidad de la célula `E-QA` (`TC-PERF-03` / `HU-47`):
 1. **Preservación de Tasa de Refresco a 60 FPS:** En consultas interactivas (zoom, pan, cambio de moneda), el tiempo de renderizado por cuadro no debe superar los **16.6ms**.
-2. **Uso de Memoización en Componentes Pesados:** Uso estricto de `useMemo` y `React.memo` en el cálculo de coordenadas de la gráfica Recharts para evitar re-renderizados innecesarios del DOM.
+2. **Uso de Memoización en Componentes Pesados:** Uso estricto de `useMemo` y `React.memo` en el cálculo de coordenadas de la gráfica Tremor (`LineChart` / `AreaChart`) para evitar re-renderizados innecesarios del DOM.
 3. **Cero Salto de Diseño (Cumulative Layout Shift - CLS < 0.1):** Las tarjetas de KPI y los contenedores de gráficos deben tener esqueletos de carga (*skeletons*) con dimensiones fijas para evitar brincos en la pantalla al recibir los datos de la API.
 4. **Respeto a la Definición de Honestidad Visual (RN-04):** Queda prohibido pintar líneas que desciendan a cero ante datos nulos; la curva debe cortarse físicamente para representar la ausencia real de precio.
 
