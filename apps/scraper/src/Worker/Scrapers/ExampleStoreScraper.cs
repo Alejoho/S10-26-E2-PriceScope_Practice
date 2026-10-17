@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace PriceScope.ScrapingHangfire.Scrapers;
+namespace Worker.Scrapers;
 
 public sealed class ExampleStoreScraper(ILogger<ExampleStoreScraper> logger) : IStoreScraper
 {

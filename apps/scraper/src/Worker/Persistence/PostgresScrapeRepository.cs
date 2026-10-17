@@ -1,8 +1,8 @@
 using Npgsql;
 using NpgsqlTypes;
-using PriceScope.ScrapingHangfire.Scrapers;
+using Worker.Scrapers;
 
-namespace PriceScope.ScrapingHangfire.Persistence;
+namespace Worker.Persistence;
 
 public sealed class PostgresScrapeRepository(NpgsqlDataSource dataSource)
 {

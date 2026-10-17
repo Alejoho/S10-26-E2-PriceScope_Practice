@@ -1,9 +1,9 @@
 using Hangfire;
 using Hangfire.PostgreSql;
 using Npgsql;
-using PriceScope.ScrapingHangfire.Jobs;
-using PriceScope.ScrapingHangfire.Persistence;
-using PriceScope.ScrapingHangfire.Scrapers;
+using Worker.Jobs;
+using Worker.Persistence;
+using Worker.Scrapers;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Postgres")
@@ -12,7 +12,6 @@ var connectionString = builder.Configuration.GetConnectionString("Postgres")
 builder.Services.AddSingleton(_ => NpgsqlDataSource.Create(connectionString));
 builder.Services.AddSingleton<PostgresScrapeRepository>();
 builder.Services.AddSingleton<IStoreScraper, ExampleStoreScraper>();
-builder.Services.AddScoped<DailyScrapeDispatcher>();
 builder.Services.AddScoped<StoreScrapeJob>();
 
 GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute

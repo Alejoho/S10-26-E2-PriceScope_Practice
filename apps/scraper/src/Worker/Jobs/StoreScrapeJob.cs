@@ -1,8 +1,8 @@
 using Hangfire;
-using PriceScope.ScrapingHangfire.Persistence;
-using PriceScope.ScrapingHangfire.Scrapers;
+using Worker.Persistence;
+using Worker.Scrapers;
 
-namespace PriceScope.ScrapingHangfire.Jobs;
+namespace Worker.Jobs;
 
 public sealed class StoreScrapeJob(
     IEnumerable<IStoreScraper> scrapers,
