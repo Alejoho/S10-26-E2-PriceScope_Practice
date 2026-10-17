@@ -247,9 +247,9 @@ sequenceDiagram
 
 ### 4.2 Downsampling Algorítmico y Renderizado Fluido a 60 FPS (RN-07 / HU-47)
 
-#### TC-PERF-03: Downsampling en Consulta Anual (365 Días)
+#### TC-PERF-03: Downsampling en Consulta Anual (Rango > 90 Días)
 * **Identificador:** `TC-PERF-03`
-* **Petición HTTP:** `GET /api/v1/dashboard?periodo=1y&moneda=ARS` sobre un catálogo con 365 mediciones diarias registradas.
+* **Petición HTTP:** `GET /api/v1/dashboard?fecha_desde=2025-10-16&fecha_hasta=2026-10-16&moneda=ARS` (365 días continuos de historial).
 * **Evaluación de Rendimiento:**
   1. El Backend consume la vista `agg_precios_semanales`.
   2. El payload JSON debe contener entre **52 y 53 puntos** como máximo en lugar de 365 observaciones crudas.
@@ -258,10 +258,17 @@ sequenceDiagram
 
 #### TC-PERF-04: Serie Diaria Completa en Rango Corto ($\le 90$ Días)
 * **Identificador:** `TC-PERF-04`
-* **Petición HTTP:** `GET /api/v1/dashboard?periodo=1m` (30 días).
+* **Petición HTTP:** `GET /api/v1/dashboard?fecha_desde=2026-09-16&fecha_hasta=2026-10-16` (30 días).
 * **Resultado Esperado:**
   * Retorna la serie continua de 30 puntos diarios.
   * Metadatos: `"downsampling_aplicado": false`, `"intervalo_agrupacion": "1d"`.
+
+#### TC-PERF-05: Rechazo por Exceso de Rango Temporal (> 365 Días - RN-09)
+* **Identificador:** `TC-PERF-05`
+* **Petición HTTP:** `GET /api/v1/dashboard?fecha_desde=2024-01-01&fecha_hasta=2026-10-16` (Rango de más de 2 años).
+* **Resultado Esperado:**
+  * El servidor rechaza inmediatamente la petición con código **`422 Unprocessable Entity`** bajo estándar RFC 7807 sin ejecutar agregaciones pesadas en base de datos.
+  * Detalle de error: `"El rango temporal solicitado supera el límite máximo permitido de 365 días (1 año calendario) para proteger el rendimiento del servicio."`
 
 ---
 
@@ -284,6 +291,7 @@ sequenceDiagram
 | **TC-PERF-02** | Límite > 50 (HU-46) | Validación / RFC 7807| Media (P2) | `E-API` / `E-QA` | Rechazo con código HTTP 422 si se solicita `limit > 50`. |
 | **TC-PERF-03** | Downsampling (HU-47) | Rendimiento / UI | Bloqueante (P0) | `E-API` / `E-F/UX/UI`| Máximo 52 puntos por año; renderizado fluido en React a 60 FPS. |
 | **TC-PERF-04** | Rango Corto (HU-47) | Funcional / API | Media (P2) | `E-API` / `E-QA` | Serie diaria completa sin downsampling en períodos $\le 90$ días. |
+| **TC-PERF-05** | Límite 365d (RN-09) | Validación / DoS | Alta (P1) | `E-API` / `E-QA` | Rechazo con código HTTP 422 si rango solicitado supera los 365 días. |
 | **TC-SEC-01** | Mitigación IDOR | Seguridad / Endpoint | Bloqueante (P0) | `E-API` / `E-QA` | Rutas dinámicas usan UUID inmutable (`/products/{uuid}/traceability`). |
 | **TC-SEC-02** | Validación URL Regex | Seguridad / Scraping | Alta (P1) | `E-Scrapper` / `E-DB`| Rechazo de URLs de tienda que no inicien bajo protocolo seguro `^https?://`. |
 

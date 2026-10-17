@@ -105,22 +105,24 @@ Con el propósito de mitigar riesgos de integración y permitir el avance simult
 #### Parámetros de Consulta (Query Parameters)
 | Parámetro | Tipo de Dato | Obligatorio | Valor por Defecto | Valores Permitidos | Descripción Técnica |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `periodo` | `string` | No | `1m` | `1m`, `3m`, `1y`, `custom` | Preset rápido de evaluación o indicador de rango libre. |
-| `fecha_desde` | `string` | Condicional | `null` | Formato `YYYY-MM-DD` | Fecha inicial del rango personalizado. Obligatorio si `periodo=custom`. |
-| `fecha_hasta` | `string` | Condicional | `null` | Formato `YYYY-MM-DD` | Fecha final del rango personalizado. Obligatorio si `periodo=custom`. |
+| `fecha_desde` | `string` | No | `Hace 30 días` | Formato `YYYY-MM-DD` | Fecha inicial del rango de análisis. Si se omite, toma por defecto 30 días atrás. |
+| `fecha_hasta` | `string` | No | `Fecha actual` | Formato `YYYY-MM-DD` | Fecha final del rango de análisis. Si se omite, toma la fecha actual. |
 | `moneda` | `string` | No | `ARS` | `ARS`, `USD` | Moneda base de conversión para métricas y series. |
 | `tienda_id` | `string` | No | `null` | `carrefour`, `jumbo`, `fravega`, `musimundo` | Filtro por comercio piloto; omisión indica consolidado general. |
 | `categoria_id` | `string` | No | `null` | `canasta-basica`, `bienes-durables` | Filtro por sector económico. |
 
 #### Lógica de Resolución Temporal y Downsampling en Backend
-1. **Prioridad de Rango:** Si se reciben `fecha_desde` y `fecha_hasta`, el Backend ignora el preset y evalúa la diferencia exacta de días.
-2. **Disparo de Downsampling (RN-07 / HU-47):**
-   * Si $(\text{fecha\_hasta} - \text{fecha\_desde}) \le 90 \text{ días}$: El backend entrega la serie diaria continua con `"downsampling_aplicado": false` e `"intervalo_agrupacion": "1d"`.
-   * Si $(\text{fecha\_hasta} - \text{fecha\_desde}) > 90 \text{ días}$: El backend agrupa las observaciones por semana usando la **mediana**, devolviendo un máximo de 52 puntos consolidados por año con `"downsampling_aplicado": true` e `"intervalo_agrupacion": "1w"`.
+1. **Rango de Fechas Limpio y Límite Máximo (RN-09):** La API opera determinísticamente con el par `(fecha_desde, fecha_hasta)`.
+   * **Tope Máximo de 365 Días:** Si $(\text{fecha\_hasta} - \text{fecha\_desde}) > 366 \text{ días}$, la API rechaza la petición con código **`422 Unprocessable Entity`** bajo estándar RFC 7807.
+   * **Prohibición de Fechas Futuras:** La `fecha_hasta` no puede ser posterior a la fecha actual del sistema.
+2. **Disparo de Downsampling Automático (RN-07 / HU-47):**
+   * **Rango $\le 90$ días:** El backend entrega la serie diaria continua con `"downsampling_aplicado": false` e `"intervalo_agrupacion": "1d"`.
+   * **Rango $> 90$ días (y $\le 365$ días):** El backend agrupa automáticamente las observaciones por semana usando la **mediana semanal** (`agg_precios_semanales`), devolviendo un máximo de 52 puntos consolidados por año con `"downsampling_aplicado": true` e `"intervalo_agrupacion": "1w"`.
 
 #### Códigos de Respuesta HTTP
 * `200 OK`: Consulta ejecutada exitosamente.
 * `400 Bad Request`: Formato de fecha inválido o `fecha_desde` posterior a `fecha_hasta`.
+* `422 Unprocessable Entity`: Rango temporal solicitado superior a 365 días (RN-09) o fecha futura detectada.
 * `500 Internal Server Error`: Fallo de ejecución en agregaciones de base de datos.
 
 #### Payload de Respuesta (200 OK)
@@ -130,7 +132,6 @@ Con el propósito de mitigar riesgos de integración y permitir el avance simult
     "frescura_datos_utc": "2026-10-16T14:00:00Z",
     "filtros_activos": {
       "moneda": "ARS",
-      "periodo": "custom",
       "fecha_desde": "2026-05-01",
       "fecha_hasta": "2026-10-16",
       "tienda_id": null,
@@ -239,9 +240,8 @@ Con el propósito de mitigar riesgos de integración y permitir el avance simult
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | `page` | `integer` | No | `1` | $\ge 1$ | Número de página consultada. |
 | `limit` | `integer` | No | `50` | $1 \le \text{limit} \le 50$ | Cantidad máxima de registros por página (Tope estricto de 50). |
-| `periodo` | `string` | No | `1m` | `1m`, `3m`, `1y`, `custom` | Preset temporal o indicador de rango libre. |
-| `fecha_desde` | `string` | Condicional | `null` | Formato `YYYY-MM-DD` | Fecha inicial obligatoria si `periodo=custom`. |
-| `fecha_hasta` | `string` | Condicional | `null` | Formato `YYYY-MM-DD` | Fecha final obligatoria si `periodo=custom`. |
+| `fecha_desde` | `string` | No | `Hace 30 días` | Formato `YYYY-MM-DD` | Fecha inicial del rango de evaluación de alertas. |
+| `fecha_hasta` | `string` | No | `Fecha actual` | Formato `YYYY-MM-DD` | Fecha final del rango de evaluación de alertas. |
 | `tienda_id` | `string` | No | `null` | `carrefour`, `jumbo`, `fravega`, `musimundo` | Filtro opcional por comercio emisor. |
 | `categoria_id` | `string` | No | `null` | `canasta-basica`, `bienes-durables` | Filtro opcional por categoría. |
 
@@ -625,7 +625,6 @@ Definición de interfaces para tipar los mocks y clientes HTTP en React:
 export type EstadoDato = 'DATO_VALIDO' | 'AGOTADO' | 'ERROR_CAPTURA' | 'SIN_DATO';
 export type EstadoSemaforo = 'VERDE' | 'AMARILLO' | 'ROJO';
 export type Moneda = 'ARS' | 'USD';
-export type PeriodoPreset = '1m' | '3m' | '1y' | 'custom';
 
 export interface PaginacionMeta {
   pagina_actual: number;
@@ -679,9 +678,8 @@ export interface DashboardResponse {
     frescura_datos_utc: string;
     filtros_activos: {
       moneda: Moneda;
-      periodo: PeriodoPreset;
-      fecha_desde?: string | null;
-      fecha_hasta?: string | null;
+      fecha_desde: string;
+      fecha_hasta: string;
       tienda_id: string | null;
       categoria_id: string | null;
     };

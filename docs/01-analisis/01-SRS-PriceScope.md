@@ -227,6 +227,13 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
   2. *Variación Acumulada en USD:* Cambio porcentual de los precios convertidos a divisa extranjera con especificación de la cotización utilizada.
   3. *Comparación vs. Devaluación:* Diferencial en puntos porcentuales entre la variación del precio y la variación de la cotización cambiaria en el mismo período.
 
+### RN-09: Límite Máximo de Consulta Temporal (Ventana de 365 Días)
+* **Protección de Base de Datos y Memoria:** Para prevenir ataques de denegación de servicio (DoS) involuntarios o escaneos excesivos sobre las hypertables de TimescaleDB, ninguna consulta temporal puede abarcar un rango mayor a **366 días** (1 año calendario con soporte de año bisiesto):
+  $$\Delta_{\text{días}} = \text{fecha\_hasta} - \text{fecha\_desde} \le 366 \text{ días}$$
+* **Prohibición de Fechas Futuras:** La `fecha_hasta` no puede ser posterior a la fecha actual del sistema.
+* **Respuesta de Servidor (RFC 7807):** Cualquier petición que exceda el límite de 365 días o presente fechas invertidas se rechaza inmediatamente con código HTTP **`422 Unprocessable Entity`**, sin ejecutar consultas a base de datos.
+* **Control en Interfaz de Usuario:** El componente de calendario en Next.js restringe el selector impidiendo marcar rangos superiores a 365 días y desactiva las fechas futuras.
+
 ## 6. Backlog Detallado de Historias de Usuario
 
 ---
@@ -819,12 +826,12 @@ El Panel de Administración de Tiendas (HU-01) y la interfaz de revisión de Zon
 * **Quiero:** Aplicar filtros multidimensionales y combinables en la cabecera del tablero.
 * **Para:** Enfocar el análisis en segmentos de negocio o ventanas temporales específicas.
 * **Criterios de Aceptación:**
-  * [ ] Filtros combinables por: rango temporal mediante presets (1m, 3m, 1y) o rango personalizado (fecha_desde y fecha_hasta), tienda, categoría y moneda.
-  * [ ] Al aplicar un filtro, los KPIs y las gráficas se recalculan de forma dinámica.
+  * [ ] Filtros combinables por: rango temporal personalizable (`fecha_desde` y `fecha_hasta`) con atajos rápidos de UI (`30D`, `90D`, `1A`), tienda, categoría y moneda.
+  * [ ] Al aplicar o cambiar un rango de fechas, los KPIs y las gráficas se recalculan de forma dinámica.
   * [ ] La barra de filtros dispone de acción directa para restablecer o limpiar filtros.
 * **Datos de Prueba Sugeridos:**
-  * Filtro: "Frávega" + "Bienes Durables" + "USD" + período "1m".
-* **Pantallas / Endpoints Involucrados:** Barra de filtros del Dashboard.
+  * Filtro: "Frávega" + "Bienes Durables" + "USD" + rango libre de 45 días (`fecha_desde` y `fecha_hasta`).
+* **Pantallas / Endpoints Involucrados:** Barra de filtros del Dashboard / Query params `fecha_desde` y `fecha_hasta`.
 
 ---
 
