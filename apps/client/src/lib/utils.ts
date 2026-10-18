@@ -3,6 +3,9 @@
 import clsx, { type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+/**
+ * Combina clases condicionales de `clsx` y resuelve conflictos de utilidades de Tailwind CSS con `twMerge`.
+ */
 export function cx(...args: ClassValue[]) {
   return twMerge(clsx(...args));
 }
@@ -10,12 +13,9 @@ export function cx(...args: ClassValue[]) {
 // Tremor focusInput [v0.0.2]
 
 export const focusInput = [
-  // base
-  "focus:ring-2",
-  // ring color
-  "focus:ring-blue-200 dark:focus:ring-blue-700/30",
-  // border color
-  "focus:border-blue-500 dark:focus:border-blue-700",
+  "focus:outline-none",
+  "focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20",
+  "data-[state=open]:border-blue-500 data-[state=open]:ring-2 data-[state=open]:ring-blue-500/20",
 ];
 
 // Tremor Raw focusRing [v0.0.1]
