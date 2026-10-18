@@ -8,13 +8,14 @@ const SPACING_PREFIX_REGEX =
   /^((?:[a-z0-9-]+:)*)(-?(?:w|h|size|min-w|max-w|min-h|max-h|p|px|py|pt|pr|pb|pl|m|mx|my|mt|mr|mb|ml|gap|gap-x|gap-y|space-x|space-y|inset|inset-x|inset-y|top|right|bottom|left|translate-x|translate-y|scroll-m|scroll-p))-\[(\d+(?:\.\d+)?)px\]$/;
 
 const ROUNDED_MAP = {
-  "2px": "2xs",
-  "4px": "xs",
-  "6px": "sm",
-  "8px": "md",
-  "12px": "lg",
-  "16px": "xl",
-  "24px": "2xl",
+  "2px": "xs",
+  "4px": "sm",
+  "6px": "md",
+  "8px": "lg",
+  "12px": "xl",
+  "16px": "2xl",
+  "24px": "3xl",
+  "32px": "4xl",
 };
 
 /**
