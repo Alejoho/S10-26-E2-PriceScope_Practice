@@ -4,7 +4,7 @@ import * as React from "react";
 import { usePathname } from "next/navigation";
 import { RiDashboardLine, RiNotification3Line } from "@remixicon/react";
 
-import { useSidebar } from "../SidebarContext";
+import { useSidebar } from "@/hooks/useSidebar";
 import { SidebarBrandHeader } from "./SidebarBrandHeader";
 import { SidebarNavItem } from "./SidebarNavItem";
 import { type PilotStoreItem, SidebarPilotStores } from "./SidebarPilotStores";
@@ -21,20 +21,14 @@ export interface SidebarProps {
   alertCount?: number;
 }
 
-const DEFAULT_PILOT_STORES: readonly PilotStoreItem[] = [
-  { id: "carrefour", name: "Carrefour", lastRun: "14:00 ART" },
-  { id: "jumbo", name: "Jumbo (Cencosud)", lastRun: "13:58 ART" },
-  { id: "fravega", name: "Frávega", lastRun: "13:45 ART" },
-  { id: "musimundo", name: "Musimundo", lastRun: "13:30 ART" },
-];
-
 /**
  * Coordinador principal de la barra lateral ejecutiva de PriceScope.
  * Coordina `SidebarBrandHeader`, `SidebarNavItem`, `SidebarPilotStores`, `SidebarUpcomingPhase` y `SidebarStatusFooter`.
  */
-export function Sidebar({ stores = DEFAULT_PILOT_STORES, alertCount = 3 }: SidebarProps) {
+export function Sidebar({ stores, alertCount = 3 }: SidebarProps) {
   const pathname = usePathname();
-  const { isCollapsed, state, toggleSidebar } = useSidebar();
+  const { isCollapsed, state, toggleSidebar, pilotStores } = useSidebar();
+  const effectiveStores = stores ?? pilotStores;
 
   const isDashboard = pathname === "/" || pathname === "/dashboard";
   const isAlerts = pathname === "/alerts";
@@ -89,7 +83,7 @@ export function Sidebar({ stores = DEFAULT_PILOT_STORES, alertCount = 3 }: Sideb
             </div>
 
             {/* Sección 2: Tiendas Piloto Monitoreadas (HU-01) */}
-            <SidebarPilotStores stores={stores} />
+            <SidebarPilotStores stores={effectiveStores} />
 
             {/* Sección 3: Próxima Fase (1.5) */}
             <SidebarUpcomingPhase />
