@@ -1,6 +1,19 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
+
+export interface PilotStoreItem {
+  id: string;
+  name: string;
+  lastRun: string;
+}
+
+export const DEFAULT_PILOT_STORES: readonly PilotStoreItem[] = [
+  { id: "carrefour", name: "Carrefour", lastRun: "14:00 ART" },
+  { id: "jumbo", name: "Jumbo", lastRun: "14:05 ART" },
+  { id: "fravega", name: "Frávega", lastRun: "14:10 ART" },
+  { id: "musimundo", name: "Musimundo", lastRun: "14:15 ART" },
+];
 
 export interface SidebarContextType {
   /** Estado booleano corto: true cuando está colapsado a modo icono */
@@ -13,9 +26,17 @@ export interface SidebarContextType {
   toggleSidebar: () => void;
   /** Fija explícitamente el estado colapsado */
   setCollapsed: (collapsed: boolean) => void;
+  /** Tiendas piloto monitoreadas en tiempo real */
+  pilotStores: readonly PilotStoreItem[];
+  /** Actualiza las tiendas piloto con los datos del backend */
+  setPilotStores: (stores: readonly PilotStoreItem[]) => void;
+  /** Etiqueta de última sincronización general del sistema */
+  lastUpdatedLabel: string;
+  /** Actualiza la etiqueta de sincronización general */
+  setLastUpdatedLabel: (label: string) => void;
 }
 
-const SidebarContext = createContext<SidebarContextType | null>(null);
+export const SidebarContext = createContext<SidebarContextType | null>(null);
 
 /**
  * Proveedor de estado para la barra lateral (Sidebar) con soporte de atajo de teclado (Ctrl+B / Cmd+B)
@@ -23,6 +44,8 @@ const SidebarContext = createContext<SidebarContextType | null>(null);
  */
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [pilotStores, setPilotStores] = useState<readonly PilotStoreItem[]>(DEFAULT_PILOT_STORES);
+  const [lastUpdatedLabel, setLastUpdatedLabel] = useState<string>("Hoy 14:00 ART");
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 1023px)");
@@ -60,8 +83,12 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
       state: isCollapsed ? "collapsed" : "expanded",
       toggleSidebar,
       setCollapsed: setIsCollapsed,
+      pilotStores,
+      setPilotStores,
+      lastUpdatedLabel,
+      setLastUpdatedLabel,
     }),
-    [isCollapsed, toggleSidebar]
+    [isCollapsed, toggleSidebar, pilotStores, lastUpdatedLabel]
   );
 
   return (
@@ -82,13 +109,4 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-/**
- * Hook para consumir el estado y acciones del Sidebar dentro de `SidebarProvider`.
- */
-export function useSidebar(): SidebarContextType {
-  const context = useContext(SidebarContext);
-  if (!context) {
-    throw new Error("useSidebar debe utilizarse dentro de un SidebarProvider.");
-  }
-  return context;
-}
+export { useSidebar } from "@/hooks/useSidebar";
