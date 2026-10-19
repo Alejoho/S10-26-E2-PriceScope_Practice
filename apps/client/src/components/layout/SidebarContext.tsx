@@ -2,6 +2,9 @@
 
 import React, { createContext, useCallback, useEffect, useMemo, useState } from "react";
 
+import { getAlertsData } from "@/services/alerts.service";
+import { getDashboardData } from "@/services/dashboard.service";
+
 export interface PilotStoreItem {
   id: string;
   name: string;
@@ -14,6 +17,19 @@ export const DEFAULT_PILOT_STORES: readonly PilotStoreItem[] = [
   { id: "fravega", name: "Frávega", lastRun: "14:10 ART" },
   { id: "musimundo", name: "Musimundo", lastRun: "14:15 ART" },
 ];
+
+function formatUtcToArtTime(utcIsoString: string): string {
+  try {
+    const date = new Date(utcIsoString);
+    if (isNaN(date.getTime())) return "14:00 ART";
+    const hours = (date.getUTCHours() - 3 + 24) % 24;
+    const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+    const hh = hours.toString().padStart(2, "0");
+    return `${hh}:${minutes} ART`;
+  } catch {
+    return "14:00 ART";
+  }
+}
 
 export interface SidebarContextType {
   /** Estado booleano corto: true cuando está colapsado a modo icono */
@@ -34,6 +50,10 @@ export interface SidebarContextType {
   lastUpdatedLabel: string;
   /** Actualiza la etiqueta de sincronización general */
   setLastUpdatedLabel: (label: string) => void;
+  /** Cantidad de alertas críticas activas mostradas en el badge */
+  alertCount: number;
+  /** Actualiza la cantidad de alertas críticas */
+  setAlertCount: (count: number) => void;
 }
 
 export const SidebarContext = createContext<SidebarContextType | null>(null);
@@ -46,6 +66,44 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [pilotStores, setPilotStores] = useState<readonly PilotStoreItem[]>(DEFAULT_PILOT_STORES);
   const [lastUpdatedLabel, setLastUpdatedLabel] = useState<string>("Hoy 14:00 ART");
+  const [alertCount, setAlertCount] = useState<number>(3);
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    // Sincronizar tiendas y frescura general desde la API
+    getDashboardData()
+      .then((dashRes) => {
+        if (!isCancelled && dashRes.pipeline_status?.tiendas) {
+          const apiStores = dashRes.pipeline_status.tiendas.map((store) => ({
+            id: store.tienda_id,
+            name: store.nombre,
+            lastRun: formatUtcToArtTime(store.ultima_corrida_utc),
+          }));
+          setPilotStores(apiStores);
+
+          if (dashRes.pipeline_status.frescura_general_utc) {
+            const timeLabel = formatUtcToArtTime(dashRes.pipeline_status.frescura_general_utc);
+            setLastUpdatedLabel(`Hoy ${timeLabel}`);
+          }
+        }
+      })
+      .catch(() => {});
+
+    // Sincronizar cantidad de alertas críticas desde la API
+    getAlertsData({ limit: 50 })
+      .then((res) => {
+        if (!isCancelled) {
+          const criticals = res.alertas.filter((a) => a.diferencial_puntos > 10).length;
+          setAlertCount(criticals);
+        }
+      })
+      .catch(() => {});
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 1023px)");
@@ -87,8 +145,10 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
       setPilotStores,
       lastUpdatedLabel,
       setLastUpdatedLabel,
+      alertCount,
+      setAlertCount,
     }),
-    [isCollapsed, toggleSidebar, pilotStores, lastUpdatedLabel]
+    [isCollapsed, toggleSidebar, pilotStores, lastUpdatedLabel, alertCount]
   );
 
   return (
