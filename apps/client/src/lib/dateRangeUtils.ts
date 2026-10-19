@@ -1,10 +1,7 @@
-import * as React from "react";
 import {
   differenceInCalendarDays,
   endOfDay,
   format,
-  isAfter,
-  isBefore,
   isSameDay,
   startOfDay,
   subDays,
@@ -13,13 +10,8 @@ import type { DateRange } from "react-day-picker";
 
 export type { DateRange };
 
-/**
- * Configuración de un atajo rápido de rango de fechas (`Preset` de Tremor).
- */
 export interface DateRangePreset {
-  /** Etiqueta visible en la lista lateral de atajos. */
   label: string;
-  /** Rango de fechas asociado al atajo. */
   dateRange: {
     from: Date;
     to: Date;
@@ -27,7 +19,7 @@ export interface DateRangePreset {
 }
 
 /**
- * Formatea un objeto Date al estándar `YYYY-MM-DD` requerido por los contratos OpenAPI (`fecha_desde` y `fecha_hasta`).
+ * Formatea una fecha a cadena ISO (yyyy-MM-dd) para consumo en APIs.
  */
 export function formatDateForApi(date: Date | undefined): string {
   if (!date) return "";
@@ -35,7 +27,7 @@ export function formatDateForApi(date: Date | undefined): string {
 }
 
 /**
- * Genera la lista de atajos rápidos (presets) de PriceScope hasta el límite anual de 365 días (RN-09).
+ * Genera la lista de rangos preestablecidos para PriceScope relativos a una fecha.
  */
 export function getPriceScopePresets(referenceDate: Date = new Date()): DateRangePreset[] {
   const today = endOfDay(referenceDate);
@@ -60,7 +52,7 @@ export function getPriceScopePresets(referenceDate: Date = new Date()): DateRang
 }
 
 /**
- * Calcula la cantidad inclusiva de días seleccionados en un rango temporal.
+ * Calcula la cantidad de días calendario comprendidos en un rango de fechas.
  */
 export function calculateRangeDayCount(range: DateRange | undefined): number | null {
   if (!range?.from) return null;
@@ -69,7 +61,7 @@ export function calculateRangeDayCount(range: DateRange | undefined): number | n
 }
 
 /**
- * Formatea la etiqueta resumida del botón disparador (`dd/MM/yyyy - dd/MM/yyyy (Nd)`).
+ * Formatea la etiqueta descriptiva del rango de fechas para la interfaz de usuario.
  */
 export function formatDateRangeLabel(range: DateRange | undefined, placeholder: string): string {
   if (!range?.from) return placeholder;
@@ -79,161 +71,15 @@ export function formatDateRangeLabel(range: DateRange | undefined, placeholder: 
 }
 
 /**
- * Evalúa si un rango temporal coincide exactamente con un atajo predefinido.
+ * Determina si el rango de fechas actual coincide con un preset dado.
  */
 export function isPresetRangeMatch(range: DateRange | undefined, preset: DateRangePreset): boolean {
   if (!range?.from || !range?.to) return false;
   return isSameDay(range.from, preset.dateRange.from) && isSameDay(range.to, preset.dateRange.to);
 }
 
-/**
- * Parámetros de configuración del hook de estado `useDateRangeDraft`.
- */
-export interface UseDateRangeDraftParams {
-  /** Rango controlado actual. */
-  value?: DateRange;
-  /** Callback al aplicar el rango. */
-  onChange?: (dateRange: DateRange | undefined) => void;
-  /** Lista de atajos opcionales. */
-  presets?: DateRangePreset[];
-  /** Límite máximo de días (RN-09). */
-  maxDays: number;
-  /** Deshabilita fechas futuras (RN-09). */
-  disableFuture: boolean;
-}
-
-/**
- * Hook que aísla la lógica de estado temporal, validación RN-09 y navegación de meses del DateRangePicker.
- */
-export function useDateRangeDraft({
-  value,
-  onChange,
-  presets: presetsProp,
-  maxDays,
-  disableFuture,
-}: UseDateRangeDraftParams) {
-  const today = React.useMemo(() => endOfDay(new Date()), []);
-  const presets = React.useMemo(
-    () => presetsProp ?? getPriceScopePresets(today),
-    [presetsProp, today]
-  );
-  const defaultRange = React.useMemo(() => (presets[2] ?? presets[0])?.dateRange, [presets]);
-  const effectiveValue = value ?? defaultRange;
-
-  const [open, setOpen] = React.useState(false);
-  const [draftRange, setDraftRange] = React.useState<DateRange | undefined>(effectiveValue);
-  const [activeField, setActiveField] = React.useState<"from" | "to" | null>(null);
-
-  const minHistoricalDate = React.useMemo(
-    () => startOfDay(subDays(today, maxDays - 1)),
-    [today, maxDays]
-  );
-
-  const [currentMonth, setCurrentMonth] = React.useState<Date>(
-    () => effectiveValue?.to ?? effectiveValue?.from ?? today
-  );
-
-  const handleOpenChange = React.useCallback(
-    (nextOpen: boolean) => {
-      setOpen(nextOpen);
-      setActiveField(null);
-      if (nextOpen) {
-        setDraftRange(effectiveValue);
-        setCurrentMonth(effectiveValue?.to ?? effectiveValue?.from ?? today);
-      }
-    },
-    [effectiveValue, today]
-  );
-
-  const handlePillClick = React.useCallback(
-    (field: "from" | "to") => {
-      if (activeField === field) {
-        setActiveField(null);
-        return;
-      }
-      setActiveField(field);
-      const targetDate = field === "from" ? draftRange?.from : draftRange?.to;
-      if (targetDate) {
-        setCurrentMonth(targetDate);
-      }
-    },
-    [activeField, draftRange]
-  );
-
-  const handleDaySelect = React.useCallback(
-    (selectedRange: DateRange | undefined, triggerDate?: Date) => {
-      if (activeField && triggerDate) {
-        const from = activeField === "from" ? triggerDate : (draftRange?.from ?? triggerDate);
-        const to = activeField === "to" ? triggerDate : (draftRange?.to ?? triggerDate);
-        setDraftRange(isAfter(from, to) ? { from: to, to: from } : { from, to });
-        setActiveField(null);
-        return;
-      }
-
-      setDraftRange(selectedRange);
-      setActiveField(selectedRange?.from && !selectedRange.to ? "to" : null);
-    },
-    [activeField, draftRange]
-  );
-
-  const handlePresetSelect = React.useCallback((preset: DateRangePreset) => {
-    setDraftRange(preset.dateRange);
-    setCurrentMonth(preset.dateRange.to);
-    setActiveField(null);
-  }, []);
-
-  const handleApply = React.useCallback(() => {
-    if (!draftRange?.from || !draftRange?.to) return;
-    onChange?.(draftRange);
-    setOpen(false);
-  }, [draftRange, onChange]);
-
-  const handleCancel = React.useCallback(() => {
-    setDraftRange(effectiveValue);
-    setActiveField(null);
-    setOpen(false);
-  }, [effectiveValue]);
-
-  const handleReset = React.useCallback(() => {
-    const defaultPreset = presets[2] ?? presets[0];
-    if (defaultPreset) {
-      setDraftRange(defaultPreset.dateRange);
-      setCurrentMonth(defaultPreset.dateRange.to);
-    } else {
-      setDraftRange(undefined);
-    }
-    setActiveField(null);
-  }, [presets]);
-
-  const disabledMatchers = React.useMemo(
-    () => [
-      ...(disableFuture ? [{ after: today }] : []),
-      ...(maxDays > 0 ? [{ before: minHistoricalDate }] : []),
-      ...(activeField === "to" && draftRange?.from && !isBefore(today, draftRange.from)
-        ? [{ before: draftRange.from }]
-        : []),
-    ],
-    [disableFuture, today, maxDays, minHistoricalDate, activeField, draftRange]
-  );
-
-  return {
-    open,
-    effectiveValue,
-    draftRange,
-    activeField,
-    currentMonth,
-    setCurrentMonth,
-    today,
-    presets,
-    minHistoricalDate,
-    disabledMatchers,
-    selectedDayCount: calculateRangeDayCount(draftRange),
-    handleOpenChange,
-    handlePillClick,
-    handleDaySelect,
-    handlePresetSelect,
-    handleApply,
-    handleCancel,
-    handleReset,
-  };
-}
+export {
+  useDateRangeDraft,
+  type UseDateRangeDraftParams,
+  type UseDateRangeDraftReturn,
+} from "@/hooks/useDateRangeDraft";

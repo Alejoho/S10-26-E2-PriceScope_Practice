@@ -6,12 +6,8 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import {
-  type DateRange,
-  type DateRangePreset,
-  formatDateRangeLabel,
-  useDateRangeDraft,
-} from "@/lib/dateRangeUtils";
+import { type DateRange, type DateRangePreset, formatDateRangeLabel } from "@/lib/dateRangeUtils";
+import { useDateRangeDraft } from "@/hooks/useDateRangeDraft";
 import { cx, focusInput, hasErrorInput } from "@/lib/utils";
 
 import { DateEndpointPill } from "./DateEndpointPill";
@@ -55,6 +51,8 @@ export interface DateRangePickerProps extends VariantProps<typeof triggerStyles>
   disableFuture?: boolean;
   /** Número de meses visibles simultáneamente en el calendario. */
   numberOfMonths?: number;
+  /** Identificador HTML para asociar con etiquetas Label (accesibilidad a11y). */
+  id?: string;
   /** Alineación del Popover respecto al botón disparador. */
   align?: "start" | "center" | "end";
 }
@@ -75,6 +73,7 @@ export function DateRangePicker({
   disableFuture = true,
   numberOfMonths = 1,
   align = "start",
+  id,
 }: DateRangePickerProps) {
   const {
     open,
@@ -107,6 +106,7 @@ export function DateRangePicker({
       <PopoverTrigger asChild disabled={disabled}>
         <button
           type="button"
+          id={id}
           tremor-id="tremor-raw"
           aria-label={formattedDisplay}
           className={cx(triggerStyles({ hasError }), className)}

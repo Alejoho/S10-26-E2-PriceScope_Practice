@@ -45,7 +45,7 @@ export function SidebarPilotStores({ stores }: SidebarPilotStoresProps) {
       <div className="space-y-2 whitespace-nowrap opacity-100 transition-opacity delay-75 duration-150 ease-linear group-data-[collapsible=icon]:hidden group-data-[collapsible=icon]:opacity-0">
         <div className="flex items-center justify-between px-2.5">
           <span className="text-[10px] font-bold tracking-[0.12em] text-slate-400 uppercase">
-            Tiendas Piloto (HU-01)
+            Tiendas Monitoreadas
           </span>
           <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-400">
             <StatusDot variant="emeraldLight" size="xs" pulse />

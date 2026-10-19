@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RiDatabase2Line } from "@remixicon/react";
 
+import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -12,8 +13,9 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Badge } from "@/components/ui/badge";
 import { StatusDot } from "@/components/ui/StatusDot";
+
+import { useSidebar } from "@/hooks/useSidebar";
 
 export interface HeaderProps {
   /** Etiqueta de hora de la última sincronización exitosa (HU-49) */
@@ -32,7 +34,7 @@ export function getViewTitle(pathname: string): string {
     return "Tablero Macroeconómico de Inflación";
   }
   if (pathname.includes("/traceability") || pathname.startsWith("/products")) {
-    return "Ficha de Producto y Trazabilidad Forense";
+    return "Ficha de Producto y Trazabilidad";
   }
   if (pathname.startsWith("/alerts")) {
     return "Módulo de Alertas de Inflación";
@@ -41,16 +43,20 @@ export function getViewTitle(pathname: string): string {
 }
 
 /**
- * Cabecera superior del layout principal construida sobre los primitivos Breadcrumb y Badge
- * de Shadcn UI / Tremor, con indicadores de frescura de datos del sistema (HU-49).
+ * Cabecera superior del layout principal construida sobre Breadcrumb y Badges
+ * con indicadores de frescura de datos del sistema.
  */
 export function Header({
-  lastUpdatedLabel = "Hoy 14:00 ART",
-  monitoredStoresCount = 4,
+  lastUpdatedLabel: propLastUpdated,
+  monitoredStoresCount: propMonitoredCount,
   regionLabel = "Argentina B2B",
 }: HeaderProps) {
   const pathname = usePathname();
   const currentViewTitle = getViewTitle(pathname);
+  const { lastUpdatedLabel: contextLastUpdated, pilotStores } = useSidebar();
+
+  const effectiveLastUpdated = propLastUpdated ?? contextLastUpdated;
+  const effectiveStoresCount = propMonitoredCount ?? pilotStores.length;
 
   return (
     <header className="z-20 flex h-16 shrink-0 items-center justify-between border-b border-slate-200/80 bg-white px-6 sm:px-8">
@@ -65,36 +71,32 @@ export function Header({
             </BreadcrumbItem>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
             <BreadcrumbItem>
-              <BreadcrumbPage className="max-w-50 truncate sm:max-w-none">
+              <BreadcrumbPage className="max-w-40 truncate sm:max-w-64 lg:max-w-none">
                 {currentViewTitle}
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
-        <Badge
-          variant="neutral"
-          size="xs"
-          className="hidden rounded-full px-2 py-0.5 font-bold tracking-wider text-slate-600 uppercase md:inline-flex"
-        >
+        <Badge variant="teal" className="hidden font-semibold lg:inline-flex">
           {regionLabel}
         </Badge>
       </div>
 
-      {/* Indicadores de Sistema (HU-49 - Sin login de usuario) */}
-      <div className="flex shrink-0 items-center gap-4">
-        {/* Frescura de Datos HU-49 */}
-        <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs text-slate-600">
+      {/* Indicadores de Sistema */}
+      <div className="flex shrink-0 items-center gap-3">
+        {/* Frescura de Datos */}
+        <div className="flex h-8 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 text-xs text-slate-600">
           <StatusDot variant="emerald" size="sm" ping />
           <span className="text-[11px] font-medium tabular-nums">
-            Últ. actualización: <strong className="text-slate-800">{lastUpdatedLabel}</strong>
+            Últ. actualización: <strong className="text-slate-800">{effectiveLastUpdated}</strong>
           </span>
         </div>
 
-        {/* Cobertura de Scraping */}
-        <div className="hidden items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-[11px] text-slate-500 sm:flex">
+        {/* Cobertura de Monitoreo */}
+        <div className="hidden h-8 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 text-[11px] text-slate-500 sm:flex">
           <RiDatabase2Line className="size-3.5 text-blue-600" />
-          <span className="tabular-nums">{monitoredStoresCount} Tiendas Monitoreadas</span>
+          <span className="tabular-nums">{effectiveStoresCount} Tiendas Monitoreadas</span>
         </div>
       </div>
     </header>
