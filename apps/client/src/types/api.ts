@@ -113,3 +113,36 @@ export interface DashboardResponse {
   };
   pipeline_status: PipelineStatusResponse;
 }
+
+export interface AlertaItem {
+  alerta_id: string;
+  producto_canonico_id: string;
+  producto_nombre: string;
+  tienda_nombre: string;
+  periodo: {
+    inicio_utc: string;
+    fin_utc: string;
+  };
+  variacion_precio_pct: number;
+  variacion_cotizacion_pct: number;
+  diferencial_puntos: number;
+  cotizacion_usada_cierre: number;
+  cobertura_pct: number;
+  regla_faltantes: string;
+  tipo_alerta: string;
+}
+
+export interface AlertsResponse {
+  paginacion: PaginacionMeta;
+  alertas: AlertaItem[];
+}
+
+export interface AlertsQueryParams {
+  page?: number;
+  limit?: number;
+  fecha_desde?: string;
+  fecha_hasta?: string;
+  tienda_id?: string | null;
+  categoria_id?: string | null;
+  severidad?: string;
+}
