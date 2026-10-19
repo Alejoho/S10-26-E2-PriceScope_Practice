@@ -5,3 +5,4 @@ export {
   type UseDateRangeDraftReturn,
 } from "./useDateRangeDraft";
 export { useSidebar } from "./useSidebar";
+export { useAlertsData, type UseAlertsDataReturn } from "./useAlertsData";
