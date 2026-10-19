@@ -97,9 +97,9 @@ function Tracker({
       className={cx("group flex h-8 w-full items-center", className)}
       {...props}
     >
-      {data.map((item, index) => (
+      {data.map(({ key: itemKey, ...item }, index) => (
         <Block
-          key={item.key ?? index}
+          key={itemKey ?? index}
           defaultBackgroundColor={defaultBackgroundColor}
           hoverEffect={hoverEffect}
           {...item}
