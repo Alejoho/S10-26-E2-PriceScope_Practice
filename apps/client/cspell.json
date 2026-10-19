@@ -1,6 +1,8 @@
 {
   "version": "0.2",
-  "language": "en,es-ES",
+  "language": "en,es",
+  "dictionaries": ["es-es"],
+  "caseSensitive": false,
   "import": ["@cspell/dict-es-es/cspell-ext.json"],
   "ignorePaths": [
     "node_modules/**",
@@ -10,7 +12,37 @@
     "package-lock.json",
     "next-env.d.ts",
     "tsconfig.tsbuildinfo",
-    "public/**"
+    "public/**",
+    "src/mocks/**"
+  ],
+  "ignoreRegExpList": [
+    "/[a-z]+_[a-z0-9_]+/g",
+    "/[a-z]+-[a-z0-9-]+/g",
+    "/https?:\\/\\/[^\\s\"']+/g"
+  ],
+  "patterns": [
+    {
+      "name": "JSXText",
+      "pattern": "/>([^<>{]+)</g"
+    }
+  ],
+  "languageSettings": [
+    {
+      "languageId": "typescript",
+      "includeRegExpList": ["CStyleComment", "string"]
+    },
+    {
+      "languageId": "typescriptreact",
+      "includeRegExpList": ["CStyleComment", "string", "JSXText"]
+    },
+    {
+      "languageId": "javascript",
+      "includeRegExpList": ["CStyleComment", "string"]
+    },
+    {
+      "languageId": "javascriptreact",
+      "includeRegExpList": ["CStyleComment", "string", "JSXText"]
+    }
   ],
   "words": [
     "PriceScope",
@@ -25,6 +57,7 @@
     "nextjs",
     "esnext",
     "skus",
+    "kpis",
     "LOCF",
     "BCRA",
     "Cencosud",
@@ -34,39 +67,51 @@
     "musimundo",
     "Playadito",
     "galletitas",
-    "Reduflación",
-    "reduflación",
-    "Reduflacion",
-    "reduflacion",
-    "macroeconómico",
-    "macroeconómica",
-    "macroeconómicos",
-    "macroeconómicas",
-    "cambiario",
-    "cambiaria",
-    "cambiarios",
-    "cambiarias",
-    "devaluación",
-    "indexación",
-    "muestral",
-    "paginación",
-    "manejador",
-    "deshabilitación",
-    "almacen",
-    "lacteos",
-    "analisis",
     "Cotiz",
     "Δpts",
     "Bento",
     "isotipo",
-    "colapsable",
-    "colapsador",
+    "reduflación",
+    "Reduflación",
+    "macroeconómico",
+    "macroeconómica",
+    "macroeconómicos",
+    "macroeconómicas",
+    "semafórica",
+    "semafórico",
     "monitoreado",
     "monitoreada",
     "monitoreados",
     "monitoreadas",
-    "semafórica",
+    "seleccionable",
+    "deshabilitación",
+    "colapsable",
+    "colapsador",
     "renderizan",
-    "seleccionable"
+    "paginación",
+    "Paginación",
+    "cambiario",
+    "cambiaria",
+    "Cambiaria",
+    "Cambiario",
+    "devaluación",
+    "Devaluación",
+    "muestral",
+    "descripción",
+    "categoría",
+    "AUTOMATICO",
+    "MANUAL",
+    "CRITICO",
+    "OPERATIVO",
+    "DEGRADADO",
+    "SUFICIENTE",
+    "SIN_DATOS_SUFICIENTES",
+    "multimoneda",
+    "Subcomponentes",
+    "subcomponentes",
+    "testeables",
+    "Modularidad",
+    "síncronos",
+    "tipado"
   ]
 }
