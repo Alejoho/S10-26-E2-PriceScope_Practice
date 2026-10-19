@@ -42,3 +42,54 @@ export function exportDashboardSeriesCsv(series: PuntoSerie[]): void {
  * Alias de compatibilidad hacia atrás para exportDashboardCsv.
  */
 export const exportDashboardCsv = exportDashboardSeriesCsv;
+
+export interface StoreAuditExportData {
+  name: string;
+  tag: string;
+  basketCost: string;
+  monthlyVariation: string;
+  skusCount: string;
+  healthLabel: string;
+  coveragePct: number;
+  syncTimeArt: string;
+}
+
+/**
+ * Exporta las filas de auditoría de la tabla de tiendas piloto a un archivo CSV descargable.
+ */
+export function exportStoresAuditCsv(rows: StoreAuditExportData[], currency: string = "ARS"): void {
+  const headers = [
+    "cadena_tienda",
+    "categoria_tag",
+    `canasta_regular_${currency.toLowerCase()}`,
+    "variacion_mes",
+    "skus_monitoreados",
+    "calidad_scraping",
+    "cobertura_pct",
+    "ultima_sincronizacion",
+  ];
+
+  const csvRows = rows.map((r) =>
+    [
+      `"${r.name.replace(/"/g, '""')}"`,
+      `"${r.tag.replace(/"/g, '""')}"`,
+      `"${r.basketCost.replace(/"/g, '""')}"`,
+      `"${r.monthlyVariation.replace(/"/g, '""')}"`,
+      `"${r.skusCount.replace(/"/g, '""')}"`,
+      `"${r.healthLabel.replace(/"/g, '""')}"`,
+      r.coveragePct,
+      `"${r.syncTimeArt.replace(/"/g, '""')}"`,
+    ].join(",")
+  );
+
+  const csvContent = [headers.join(","), ...csvRows].join("\n");
+  const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", "pricescope-auditoria-tiendas.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}

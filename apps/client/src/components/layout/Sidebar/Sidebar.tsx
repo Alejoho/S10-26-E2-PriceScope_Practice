@@ -25,10 +25,17 @@ export interface SidebarProps {
  * Coordinador principal de la barra lateral ejecutiva de PriceScope.
  * Coordina `SidebarBrandHeader`, `SidebarNavItem`, `SidebarPilotStores`, `SidebarUpcomingPhase` y `SidebarStatusFooter`.
  */
-export function Sidebar({ stores, alertCount = 3 }: SidebarProps) {
+export function Sidebar({ stores, alertCount: propAlertCount }: SidebarProps) {
   const pathname = usePathname();
-  const { isCollapsed, state, toggleSidebar, pilotStores } = useSidebar();
+  const {
+    isCollapsed,
+    state,
+    toggleSidebar,
+    pilotStores,
+    alertCount: contextAlertCount,
+  } = useSidebar();
   const effectiveStores = stores ?? pilotStores;
+  const effectiveAlertCount = propAlertCount ?? contextAlertCount;
 
   const isDashboard = pathname === "/" || pathname === "/dashboard";
   const isAlerts = pathname === "/alerts";
@@ -77,7 +84,7 @@ export function Sidebar({ stores, alertCount = 3 }: SidebarProps) {
                   isActive={isAlerts}
                   isCollapsed={isCollapsed}
                   accent="amber"
-                  badgeCount={alertCount}
+                  badgeCount={effectiveAlertCount}
                 />
               </ul>
             </div>

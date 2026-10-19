@@ -7,13 +7,13 @@ const calloutVariants = tv({
   base: "flex flex-col overflow-hidden rounded-lg border p-3.5 text-xs transition-all",
   variants: {
     variant: {
-      default: ["border-blue-200 bg-blue-50/40 text-blue-900 hover:bg-blue-50/80"],
-      success: ["border-emerald-200 bg-emerald-50/40 text-emerald-900 hover:bg-emerald-50/80"],
-      error: ["border-rose-200 bg-rose-50/40 text-rose-900 hover:bg-rose-50/80"],
-      warning: ["border-amber-200 bg-amber-50/40 text-amber-900 hover:bg-amber-50/80"],
-      neutral: ["border-slate-200 bg-slate-50/60 text-slate-900 hover:bg-slate-100/80"],
-      purple: ["border-purple-200 bg-purple-50/40 text-purple-900 hover:bg-purple-50/80"],
-      teal: ["border-teal-200 bg-teal-50/40 text-teal-900 hover:bg-teal-50/80"],
+      default: ["border-blue-200 bg-blue-50/80 text-blue-900"],
+      success: ["border-emerald-200 bg-emerald-50/80 text-emerald-900"],
+      error: ["border-rose-200 bg-rose-50/80 text-rose-900"],
+      warning: ["border-amber-200 bg-amber-50/80 text-amber-900"],
+      neutral: ["border-slate-200 bg-slate-50/80 text-slate-900"],
+      purple: ["border-purple-200 bg-purple-50/80 text-purple-900"],
+      teal: ["border-teal-200 bg-teal-50/80 text-teal-900"],
     },
   },
   defaultVariants: {
