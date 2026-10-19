@@ -53,10 +53,6 @@ function filterMockData(params: DashboardQueryParams): DashboardResponse {
     (day) => day.fecha >= fechaDesde && day.fecha <= fechaHasta
   );
 
-  const filteredTiendas = tiendaId
-    ? rawMock.pipeline_status.tiendas.filter((store) => store.tienda_id === tiendaId)
-    : rawMock.pipeline_status.tiendas;
-
   return {
     ...rawMock,
     contexto: {
@@ -75,10 +71,7 @@ function filterMockData(params: DashboardQueryParams): DashboardResponse {
       banda_calidad_diaria:
         filteredBanda.length > 0 ? filteredBanda : rawMock.grafico_evolucion.banda_calidad_diaria,
     },
-    pipeline_status: {
-      ...rawMock.pipeline_status,
-      tiendas: filteredTiendas,
-    },
+    pipeline_status: rawMock.pipeline_status,
   };
 }
 

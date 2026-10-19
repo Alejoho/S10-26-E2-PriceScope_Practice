@@ -22,6 +22,8 @@ export function useDashboardData() {
   const [chartMode, setChartMode] = useState<"strict" | "continuous">("strict");
   const [data, setData] = useState<DashboardResponse | null>(null);
   const [resolvedQueryKey, setResolvedQueryKey] = useState<string | null>(null);
+  const [storeOptions, setStoreOptions] = useState<Array<{ id: string; name: string }>>([]);
+  const [categoryOptions, setCategoryOptions] = useState<Array<{ id: string; name: string }>>([]);
 
   const fechaDesde = dateRange?.from ? formatDateForApi(dateRange.from) : undefined;
   const fechaHasta = dateRange?.to ? formatDateForApi(dateRange.to) : undefined;
@@ -41,6 +43,26 @@ export function useDashboardData() {
       if (!isCancelled) {
         setData(response);
         setResolvedQueryKey(currentQueryKey);
+
+        if (response.pipeline_status?.tiendas && response.pipeline_status.tiendas.length > 0) {
+          setStoreOptions((prev) => {
+            const map = new Map(prev.map((s) => [s.id, s.name]));
+            for (const store of response.pipeline_status.tiendas) {
+              map.set(store.tienda_id, store.nombre);
+            }
+            return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
+          });
+        }
+
+        if (response.variacion_por_categoria && response.variacion_por_categoria.length > 0) {
+          setCategoryOptions((prev) => {
+            const map = new Map(prev.map((c) => [c.id, c.name]));
+            for (const cat of response.variacion_por_categoria) {
+              map.set(cat.categoria_id, cat.nombre);
+            }
+            return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
+          });
+        }
       }
     });
 
@@ -80,7 +102,7 @@ export function useDashboardData() {
         ? (validSeries[validSeries.length - 1].precio_regular ?? undefined)
         : undefined;
 
-    return getPilotStoresAuditRows(
+    const allRows = getPilotStoresAuditRows(
       data.pipeline_status.tiendas,
       selectedCurrency,
       data.kpis?.variacion_usd?.cotizacion_usada ?? 1200,
@@ -90,23 +112,12 @@ export function useDashboardData() {
         variationUsd: data.kpis?.variacion_usd?.porcentaje,
       }
     );
-  }, [data, selectedCurrency]);
 
-  const storeOptions = useMemo(() => {
-    if (!data?.pipeline_status?.tiendas) return [];
-    return data.pipeline_status.tiendas.map((store) => ({
-      id: store.tienda_id,
-      name: store.nombre,
-    }));
-  }, [data]);
-
-  const categoryOptions = useMemo(() => {
-    if (!data?.variacion_por_categoria) return [];
-    return data.variacion_por_categoria.map((cat) => ({
-      id: cat.categoria_id,
-      name: cat.nombre,
-    }));
-  }, [data]);
+    if (selectedStore !== "all") {
+      return allRows.filter((row) => row.id === selectedStore);
+    }
+    return allRows;
+  }, [data, selectedCurrency, selectedStore]);
 
   const totalProducts = useMemo(() => {
     if (!data) return 0;
