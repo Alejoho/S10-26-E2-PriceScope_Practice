@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import type { SeverityLevel } from "@/lib/alerts/types";
 
 const SEVERITY_OPTIONS = [
@@ -48,9 +49,7 @@ interface FilterSelectProps {
 function FilterSelect({ label, value, onChange, options, disabled }: FilterSelectProps) {
   return (
     <div className="w-48 sm:w-56">
-      <Label className="mb-1 block text-[11px] font-semibold tracking-wider text-slate-500 uppercase">
-        {label}
-      </Label>
+      <Label className="mb-1 block text-xs font-medium text-slate-700">{label}</Label>
       <Select value={value} onValueChange={onChange} disabled={disabled}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder={options[0]?.label} />
@@ -79,7 +78,8 @@ export interface AlertsFiltersProps {
 }
 
 /**
- * Filter bar component providing dropdowns for severity, category, and store.
+ * Filter bar component providing dropdowns for severity, category, and store,
+ * with identical reset button style and behavior as the dashboard.
  */
 export function AlertsFilters({
   severityFilter,
@@ -94,7 +94,7 @@ export function AlertsFilters({
   return (
     <Card className="p-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="flex flex-wrap items-end gap-3.5">
+        <div className="flex flex-wrap items-end gap-2">
           <FilterSelect
             label="Severidad de Divergencia"
             value={severityFilter}
@@ -116,18 +116,24 @@ export function AlertsFilters({
             options={STORE_OPTIONS}
             disabled={disabled}
           />
+          <div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="default"
+                  onClick={onReset}
+                  disabled={disabled}
+                  className="h-10 border border-slate-200 bg-slate-50 px-3.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                >
+                  <RiRefreshLine className="size-3.5 text-slate-500" />
+                  <span>Limpiar</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Restablecer filtros por defecto</TooltipContent>
+            </Tooltip>
+          </div>
         </div>
-
-        <Button
-          variant="secondary"
-          size="default"
-          onClick={onReset}
-          disabled={disabled}
-          aria-label="Limpiar Filtros"
-        >
-          <RiRefreshLine className="size-3.5 text-slate-500" />
-          <span>Limpiar Filtros</span>
-        </Button>
       </div>
     </Card>
   );

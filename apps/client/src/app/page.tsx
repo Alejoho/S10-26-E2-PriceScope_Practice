@@ -68,15 +68,7 @@ export default function DashboardPage() {
 
   return (
     <main className="mx-auto max-w-7xl space-y-6 p-8">
-      <DashboardHeaderCard
-        isLoading={isLoading}
-        hasData={Boolean(data && data.grafico_evolucion.series.length > 0)}
-        onExportCsv={() => {
-          if (data) {
-            exportDashboardCsv(data.grafico_evolucion.series);
-          }
-        }}
-      />
+      <DashboardHeaderCard />
 
       <DashboardFiltersCard
         dateRange={dateRange}
@@ -88,6 +80,12 @@ export default function DashboardPage() {
         selectedCurrency={selectedCurrency}
         onCurrencyChange={setSelectedCurrency}
         onResetFilters={handleResetFilters}
+        onExportCsv={() => {
+          if (data) {
+            exportDashboardCsv(data.grafico_evolucion.series);
+          }
+        }}
+        isExportDisabled={isLoading || !Boolean(data && data.grafico_evolucion.series.length > 0)}
         stores={storeOptions}
         categories={categoryOptions}
       />

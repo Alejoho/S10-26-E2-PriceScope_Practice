@@ -3,6 +3,7 @@ import type { ObservacionTrazabilidadItem } from "@/types/api";
 /**
  * Enriquecedor puro de observaciones forenses:
  * - Calcula la variación diaria porcentual (`variacion_diaria_pct`) comparando con el día anterior de la misma tienda.
+ * - Para el registro base (el primer registro histórico de la serie sin día previo), muestra 0.0% indicando punto de partida estable.
  */
 export function enrichTraceabilityObservations(
   observations: ObservacionTrazabilidadItem[]
@@ -26,6 +27,9 @@ export function enrichTraceabilityObservations(
         const delta =
           ((obs.precio_regular - previousObs.precio_regular) / previousObs.precio_regular) * 100;
         variacion_diaria_pct = Math.round(delta * 10) / 10;
+      } else {
+        // Es la primera observación registrada de la serie histórica (registro base)
+        variacion_diaria_pct = 0.0;
       }
     }
 
