@@ -42,8 +42,8 @@ export function AlertTableRowItem({ row }: AlertTableRowItemProps) {
       <TableCell className="px-4 py-3.5">
         <Badge
           variant={row.deltaType}
-          size="xs"
-          className="rounded-full px-2.5 py-0.5 font-bold tabular-nums"
+          size="default"
+          className="rounded-full px-3 py-1 font-bold tabular-nums"
         >
           {row.delta}
         </Badge>
@@ -55,11 +55,11 @@ export function AlertTableRowItem({ row }: AlertTableRowItemProps) {
           </span>
           <Badge
             variant={rateVariant}
-            size="xs"
+            size="default"
             title={rateInfo.tooltip}
-            className={row.isApprox ? "cursor-help" : ""}
+            className={`px-2.5 py-1 text-xs font-semibold ${row.isApprox ? "cursor-help" : ""}`}
           >
-            {row.isApprox && <RiAlertLine className="size-3" />}
+            {row.isApprox && <RiAlertLine className="size-3.5" />}
             <span>{rateInfo.label}</span>
           </Badge>
         </div>

@@ -1,16 +1,7 @@
 import type { AlertaItem } from "@/types/api";
+import { downloadFile, escapeCsvField } from "@/lib/csvUtils";
 
-/**
- * Escapes CSV text fields conforming to RFC 4180.
- */
-function escapeCsvField(value: string | number | null | undefined): string {
-  if (value === null || value === undefined) return "";
-  const stringValue = String(value);
-  if (stringValue.includes(",") || stringValue.includes('"') || stringValue.includes("\n")) {
-    return `"${stringValue.replace(/"/g, '""')}"`;
-  }
-  return stringValue;
-}
+export { escapeCsvField };
 
 /**
  * Builds RFC 4180 compliant CSV string from alerts list.
@@ -54,41 +45,23 @@ export function buildAlertsCsv(alerts: AlertaItem[]): string {
 }
 
 /**
- * Triggers a browser download of alerts in CSV format.
+ * Triggers CSV file download in the browser for given alerts list.
  */
 export function exportAlertsCsv(
   alerts: AlertaItem[],
-  filename: string = "pricescope-alertas.csv"
+  filename: string = "alertas-divergencia-pricescope.csv"
 ): void {
   const csvContent = buildAlertsCsv(alerts);
-  const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
-  triggerBrowserDownload(blob, filename);
+  downloadFile(csvContent, filename);
 }
 
 /**
- * Triggers a browser download of alerts in JSON format.
+ * Triggers JSON file download in the browser for given alerts list.
  */
 export function exportAlertsJson(
   alerts: AlertaItem[],
-  filename: string = "pricescope-alertas.json"
+  filename: string = "alertas-divergencia-pricescope.json"
 ): void {
   const jsonContent = JSON.stringify(alerts, null, 2);
-  const blob = new Blob([jsonContent], { type: "application/json;charset=utf-8;" });
-  triggerBrowserDownload(blob, filename);
-}
-
-/**
- * Helper to initiate a client-side file download via dynamic anchor.
- */
-function triggerBrowserDownload(blob: Blob, filename: string): void {
-  if (typeof window === "undefined") return;
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.setAttribute("download", filename);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  downloadFile(jsonContent, filename, "application/json;charset=utf-8;");
 }

@@ -31,9 +31,6 @@ export function AlertsMilestones({
           <CardTitle className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-900">
             <RiHistoryLine className="size-4 text-purple-600" />
             <span>Historial de Hitos de Mercado y Reduflación</span>
-            <span className="rounded-full border border-purple-200 bg-purple-50 px-2.5 py-0.5 text-[10px] font-bold text-purple-700">
-              Causas Macroeconómicas
-            </span>
           </CardTitle>
           <CardDescription className="mt-1">
             Eventos observados que justifican las alertas de precios en los productos analizados
