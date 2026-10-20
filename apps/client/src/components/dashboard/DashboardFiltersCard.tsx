@@ -66,7 +66,7 @@ export function DashboardFiltersCard({
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         {/* Controles de filtro con gap-2 compacto sin anchos excesivos */}
         <div className="flex flex-wrap items-end gap-2">
-          <div className="w-auto">
+          <div className="w-full sm:w-auto">
             <div className="mb-1 flex items-center justify-between">
               <Label htmlFor="date-range-filter">Rango Temporal de Análisis</Label>
             </div>
@@ -76,18 +76,18 @@ export function DashboardFiltersCard({
               onChange={onDateRangeChange}
               presets={getPriceScopePresets()}
               placeholder="Seleccionar ventana temporal"
-              className="w-auto min-w-0"
+              className="w-full min-w-0 sm:w-auto"
             />
           </div>
 
-          <div className="w-auto">
+          <div className="w-full sm:w-auto">
             <Label htmlFor="store-filter" className="mb-1 block">
               Cadena / Tienda
             </Label>
             <Select name="store" value={selectedStore} onValueChange={onStoreChange}>
               <SelectTrigger
                 id="store-filter"
-                className="w-auto min-w-0"
+                className="w-full min-w-0 sm:w-auto"
                 aria-label="Cadena / Tienda"
               >
                 <SelectValue placeholder="Seleccionar tienda" />
@@ -105,14 +105,14 @@ export function DashboardFiltersCard({
             </Select>
           </div>
 
-          <div className="w-auto">
+          <div className="w-full sm:w-auto">
             <Label htmlFor="category-filter" className="mb-1 block">
               Categoría Canónica
             </Label>
             <Select name="category" value={selectedCategory} onValueChange={onCategoryChange}>
               <SelectTrigger
                 id="category-filter"
-                className="w-auto min-w-0"
+                className="w-full min-w-0 sm:w-auto"
                 aria-label="Categoría Canónica"
               >
                 <SelectValue placeholder="Seleccionar categoría" />
@@ -128,7 +128,7 @@ export function DashboardFiltersCard({
             </Select>
           </div>
 
-          <div className="w-auto">
+          <div className="w-full sm:w-auto">
             <Label htmlFor="currency-filter" className="mb-1 block">
               Moneda de Cálculo
             </Label>
@@ -139,7 +139,7 @@ export function DashboardFiltersCard({
             >
               <SelectTrigger
                 id="currency-filter"
-                className="w-auto min-w-0"
+                className="w-full min-w-0 sm:w-auto"
                 aria-label="Moneda de Cálculo"
               >
                 <SelectValue placeholder="Seleccionar moneda" />
@@ -152,14 +152,14 @@ export function DashboardFiltersCard({
             </Select>
           </div>
 
-          <div className="w-auto">
+          <div className="w-full sm:w-auto">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
                   size="default"
                   onClick={onResetFilters}
-                  className="h-10 border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  className="h-10 w-full border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 sm:w-auto"
                 >
                   <RiRefreshLine className="size-3.5 text-slate-500" />
                   <span>Limpiar</span>
