@@ -43,7 +43,7 @@ interface DashboardFiltersCardProps {
 }
 
 /**
- * Barra de filtros dinámicos del Dashboard con alineación a la izquierda
+ * Barra de filtros dinámicos del Dashboard con alineación estricta (space-x-2)
  * y botón unificado de exportación posicionado a la derecha.
  */
 export function DashboardFiltersCard({
@@ -64,9 +64,9 @@ export function DashboardFiltersCard({
   return (
     <Card className="p-5">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        {/* Controles de filtro y botón de Limpiar/Reset alineados a la izquierda */}
-        <div className="flex flex-wrap items-end gap-3.5">
-          <div className="min-w-72 flex-1 sm:min-w-80">
+        {/* Filtros organizados con espaciado uniforme space-x-2 */}
+        <div className="flex flex-wrap items-end gap-2">
+          <div className="w-80">
             <div className="mb-1 flex items-center justify-between">
               <Label htmlFor="date-range-filter">Rango Temporal de Análisis</Label>
             </div>
@@ -84,7 +84,7 @@ export function DashboardFiltersCard({
               Cadena / Tienda
             </Label>
             <Select name="store" value={selectedStore} onValueChange={onStoreChange}>
-              <SelectTrigger id="store-filter" className="min-w-44" aria-label="Cadena / Tienda">
+              <SelectTrigger id="store-filter" className="min-w-40" aria-label="Cadena / Tienda">
                 <SelectValue placeholder="Seleccionar tienda" />
               </SelectTrigger>
               <SelectContent>
@@ -107,7 +107,7 @@ export function DashboardFiltersCard({
             <Select name="category" value={selectedCategory} onValueChange={onCategoryChange}>
               <SelectTrigger
                 id="category-filter"
-                className="min-w-44"
+                className="min-w-40"
                 aria-label="Categoría Canónica"
               >
                 <SelectValue placeholder="Seleccionar categoría" />
@@ -134,7 +134,7 @@ export function DashboardFiltersCard({
             >
               <SelectTrigger
                 id="currency-filter"
-                className="min-w-44"
+                className="min-w-40"
                 aria-label="Moneda de Cálculo"
               >
                 <SelectValue placeholder="Seleccionar moneda" />
@@ -154,7 +154,7 @@ export function DashboardFiltersCard({
                   variant="ghost"
                   size="default"
                   onClick={onResetFilters}
-                  className="h-10 border border-slate-200 bg-slate-50 px-3.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  className="h-10 border border-slate-200 bg-slate-50 px-3 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                 >
                   <RiRefreshLine className="size-3.5 text-slate-500" />
                   <span>Limpiar</span>
@@ -165,9 +165,9 @@ export function DashboardFiltersCard({
           </div>
         </div>
 
-        {/* Botón unificado de exportar alineado a la derecha */}
+        {/* Botón unificado de exportación alineado a la derecha */}
         {onExportCsv && (
-          <div className="shrink-0 self-end lg:self-end">
+          <div className="shrink-0 self-end">
             <ExportButton
               formatLabel="CSV"
               onExport={onExportCsv}
