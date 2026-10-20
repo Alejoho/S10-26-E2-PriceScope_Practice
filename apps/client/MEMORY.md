@@ -15,6 +15,12 @@ Memoria viva del proyecto entre sesiones (Máximo ~50 líneas).
   - Servicio `traceability.service.ts` desacoplado con soporte `NEXT_PUBLIC_API_URL` y fallback a mock.
   - Custom hook `useTraceabilityData` con control de concurrencia y filtros.
   - Suite de 54 pruebas unitarias en Vitest con 100% de éxito.
+- **Auditoría y Pase de UX/UI & Frontend Design Especializado:**
+  - Integración de menú de navegación móvil en `Header.tsx` mediante `RiSideBarLine` accesible para tablets y smartphones.
+  - Padding responsivo ergonómico en todas las vistas principales (`p-4 sm:p-6 lg:p-8`).
+  - Filtros adaptables con comportamiento fluido `w-full sm:w-auto` en Dashboard y Alertas.
+  - Cobertura completa de la lista de cero estados (Zero-State Checklist): `EmptyState` integrado en `DashboardStoresTable`, `DashboardEvolutionSection` y `AlertsMilestones`.
+  - Eliminación de clichés/tells de IA genérica (`&rarr;` en botones de acción) reemplazado por iconografía semántica (`RiSearchEyeLine`) y foco visual accesible (`focus-visible:ring-2`).
 
 ## Decisiones y Justificación Técnica
 
