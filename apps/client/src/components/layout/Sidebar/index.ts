@@ -8,3 +8,4 @@ export {
 } from "./SidebarPilotStores";
 export { SidebarStatusFooter } from "./SidebarStatusFooter";
 export { SidebarUpcomingPhase } from "./SidebarUpcomingPhase";
+export { LegalNoticeModal, type LegalNoticeModalProps } from "./LegalNoticeModal";

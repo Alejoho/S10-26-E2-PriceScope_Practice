@@ -1,9 +1,9 @@
-import * as React from "react";
+﻿import * as React from "react";
 
 import { StatusDot } from "@/components/ui/StatusDot";
 
 /**
- * Datos de una tienda piloto monitoreada en la Fase 1 (HU-01).
+ * Datos de una tienda piloto monitoreada en la Fase 1.
  */
 export interface PilotStoreItem {
   /** Identificador único de la tienda. */
@@ -23,7 +23,7 @@ export interface SidebarPilotStoresProps {
 }
 
 /**
- * Widget de estado en vivo para las tiendas piloto monitoreadas (HU-01).
+ * Widget de estado en vivo para las tiendas piloto monitoreadas.
  */
 export function SidebarPilotStores({ stores }: SidebarPilotStoresProps) {
   const count = stores.length;

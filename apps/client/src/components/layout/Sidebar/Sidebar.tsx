@@ -10,12 +10,13 @@ import { SidebarNavItem } from "./SidebarNavItem";
 import { type PilotStoreItem, SidebarPilotStores } from "./SidebarPilotStores";
 import { SidebarStatusFooter } from "./SidebarStatusFooter";
 import { SidebarUpcomingPhase } from "./SidebarUpcomingPhase";
+import { LegalNoticeModal } from "./LegalNoticeModal";
 
 /**
  * Propiedades del componente coordinador Sidebar.
  */
 export interface SidebarProps {
-  /** Lista de tiendas piloto monitoreadas (por defecto usa las 4 tiendas de HU-01). */
+  /** Lista de tiendas piloto monitoreadas (por defecto usa las 4 tiendas piloto). */
   stores?: readonly PilotStoreItem[];
   /** Cantidad de alertas activas mostradas en el badge de navegación. */
   alertCount?: number;
@@ -89,11 +90,16 @@ export function Sidebar({ stores, alertCount: propAlertCount }: SidebarProps) {
               </ul>
             </div>
 
-            {/* Sección 2: Tiendas Piloto Monitoreadas (HU-01) */}
+            {/* Sección 2: Tiendas Piloto Monitoreadas */}
             <SidebarPilotStores stores={effectiveStores} />
 
             {/* Sección 3: Próxima Fase (1.5) */}
             <SidebarUpcomingPhase />
+
+            {/* Sección 4: Legal & Fair Use */}
+            <div className="pt-2">
+              <LegalNoticeModal isCollapsed={isCollapsed} />
+            </div>
           </div>
         </div>
 
