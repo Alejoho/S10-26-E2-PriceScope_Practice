@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { RiCheckLine, RiRefreshLine } from "@remixicon/react";
 
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 export interface DateRangeFooterProps {
   /** Cantidad de días seleccionados en el borrador actual. */
   selectedDayCount: number | null;
-  /** Límite máximo de días permitidos por RN-09. */
+  /** Límite máximo de días permitidos por regla de negocio. */
   maxDays: number;
   /** Habilita el botón de confirmación cuando ambos extremos están definidos. */
   canApply: boolean;
@@ -22,7 +22,7 @@ export interface DateRangeFooterProps {
 }
 
 /**
- * Pie del selector de fechas con contador de días (RN-09) y botones de acción de Tremor.
+ * Pie del selector de fechas con contador de días  y botones de acción de Tremor.
  */
 export function DateRangeFooter({
   selectedDayCount,

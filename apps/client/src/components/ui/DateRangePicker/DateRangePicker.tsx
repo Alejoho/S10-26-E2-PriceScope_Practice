@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { RiArrowRightLine, RiCalendar2Line } from "@remixicon/react";
@@ -45,9 +45,9 @@ export interface DateRangePickerProps extends VariantProps<typeof triggerStyles>
   presets?: DateRangePreset[];
   /** Deshabilita la interacción del selector. */
   disabled?: boolean;
-  /** Número máximo de días permitidos en el rango (RN-09: 365 días máx.). */
+  /** Número máximo de días permitidos en el rango (365 días máx.). */
   maxDays?: number;
-  /** Prohíbe la selección de fechas futuras (RN-09: fecha_hasta <= hoy). */
+  /** Prohíbe la selección de fechas futuras (fecha_hasta <= hoy). */
   disableFuture?: boolean;
   /** Número de meses visibles simultáneamente en el calendario. */
   numberOfMonths?: number;
@@ -58,7 +58,7 @@ export interface DateRangePickerProps extends VariantProps<typeof triggerStyles>
 }
 
 /**
- * Coordinador principal del selector de rango de fechas de Tremor y Shadcn UI adaptado a PriceScope (RN-09).
+ * Coordinador principal del selector de rango de fechas de Tremor y Shadcn UI adaptado a PriceScope.
  * Coordina `DateRangePresetsList`, `DateEndpointPill`, `Calendar` y `DateRangeFooter` con `useDateRangeDraft`.
  */
 export function DateRangePicker({
