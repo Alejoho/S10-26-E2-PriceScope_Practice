@@ -1,9 +1,9 @@
-import type { TrackerBlockProps } from "@/components/charts/tracker";
+﻿import type { TrackerBlockProps } from "@/components/charts/tracker";
 import type { BandaCalidad, PuntoSerie } from "@/types/api";
 import { formatShortDateLabel } from "./formatters";
 
 /**
- * Paleta canónica homologada de estados y semáforos (RF-02).
+ * Paleta canónica homologada de estados y semáforos.
  * Sincroniza clases de Tailwind para el Tracker con códigos hex para ReferenceArea de Recharts.
  */
 export const STATUS_COLORS = {

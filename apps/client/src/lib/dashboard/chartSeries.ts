@@ -1,10 +1,10 @@
-import type { Moneda, PuntoSerie } from "@/types/api";
+﻿import type { Moneda, PuntoSerie } from "@/types/api";
 import { formatShortDateLabel } from "./formatters";
 import type { DashboardChartRow } from "./types";
 
 /**
  * Transforma la serie temporal del Dashboard al formato consumido por LineChart de Tremor,
- * preservando valores nulos (RN-04) para soportar Modo Estricto y Modo Continuo (LOCF).
+ * preservando valores nulos para soportar Modo Estricto y Modo Continuo (LOCF).
  * Garantiza correspondencia 1:1 entre los datos del backend y las filas del gráfico.
  */
 export function buildEvolutionChartData(

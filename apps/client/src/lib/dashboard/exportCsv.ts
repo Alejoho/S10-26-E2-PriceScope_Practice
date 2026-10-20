@@ -1,4 +1,5 @@
 import type { PuntoSerie } from "@/types/api";
+import { downloadFile } from "@/lib/csvUtils";
 
 /**
  * Exporta la serie temporal activa del Dashboard a un archivo CSV para descarga.
@@ -27,15 +28,7 @@ export function exportDashboardSeriesCsv(series: PuntoSerie[]): void {
     ].join(",")
   );
   const csvContent = [headers.join(","), ...rows].join("\n");
-  const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.setAttribute("download", "pricescope-dashboard-series.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  downloadFile(csvContent, "pricescope-dashboard-series.csv");
 }
 
 /**
@@ -48,25 +41,23 @@ export interface StoreAuditExportData {
   tag: string;
   basketCost: string;
   monthlyVariation: string;
-  skusCount: string;
-  healthLabel: string;
-  coveragePct: number;
-  syncTimeArt: string;
+  usdDelta: string;
+  availability: string;
+  statusText: string;
 }
 
 /**
- * Exporta las filas de auditoría de la tabla de tiendas piloto a un archivo CSV descargable.
+ * Exporta el reporte de auditoría de tiendas piloto a un archivo CSV.
  */
 export function exportStoresAuditCsv(rows: StoreAuditExportData[], currency: string = "ARS"): void {
   const headers = [
-    "cadena_tienda",
-    "categoria_tag",
-    `canasta_regular_${currency.toLowerCase()}`,
-    "variacion_mes",
-    "skus_monitoreados",
-    "calidad_scraping",
-    "cobertura_pct",
-    "ultima_sincronizacion",
+    "tienda_nombre",
+    "identificador",
+    `costo_canasta_${currency.toLowerCase()}`,
+    "variacion_mensual_pct",
+    "diferencial_vs_divisa",
+    "disponibilidad_pct",
+    "estado_servicio",
   ];
 
   const csvRows = rows.map((r) =>
@@ -75,21 +66,12 @@ export function exportStoresAuditCsv(rows: StoreAuditExportData[], currency: str
       `"${r.tag.replace(/"/g, '""')}"`,
       `"${r.basketCost.replace(/"/g, '""')}"`,
       `"${r.monthlyVariation.replace(/"/g, '""')}"`,
-      `"${r.skusCount.replace(/"/g, '""')}"`,
-      `"${r.healthLabel.replace(/"/g, '""')}"`,
-      r.coveragePct,
-      `"${r.syncTimeArt.replace(/"/g, '""')}"`,
+      `"${r.usdDelta.replace(/"/g, '""')}"`,
+      `"${r.availability.replace(/"/g, '""')}"`,
+      `"${r.statusText.replace(/"/g, '""')}"`,
     ].join(",")
   );
 
   const csvContent = [headers.join(","), ...csvRows].join("\n");
-  const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.setAttribute("download", "pricescope-auditoria-tiendas.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  downloadFile(csvContent, `auditoria-tiendas-pricescope-${currency.toLowerCase()}.csv`);
 }
