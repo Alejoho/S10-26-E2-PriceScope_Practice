@@ -162,9 +162,9 @@ export function TraceabilityObservationsTable({
 
         <div className="flex flex-wrap items-center gap-2">
           {availableStores.length > 0 && onStoreChange && (
-            <div className="w-40">
+            <div className="w-44">
               <Select value={selectedStore} onValueChange={onStoreChange}>
-                <SelectTrigger className="h-8 py-1 text-xs">
+                <SelectTrigger className="h-10 text-xs">
                   <SelectValue placeholder="Todas las tiendas" />
                 </SelectTrigger>
                 <SelectContent>
