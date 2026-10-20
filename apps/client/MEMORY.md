@@ -6,23 +6,21 @@ Memoria viva del proyecto entre sesiones (Máximo ~50 líneas).
 
 - **Base UI:** Next.js 16 + React 19 + Tailwind CSS v4 + Radix UI + Recharts 3.10.
 - **Spec 001 Finalizada:** Dashboard analítico (`/`) alineado temporal y cromáticamente.
-- **Spec 002 Finalizada (chart-grid-alignment):**
-  - Modularización limpia de `dashboardUtils` en submódulos especializados bajo `src/lib/dashboard/` (~30-70 líneas) y hook `useDashboardData` en `src/hooks/`.
-  - Sincronización milimétrica entre `LineChart` y `Tracker` con contenedor `pl-24 pr-3` (96px/12px).
-- **Spec 003 Finalizada (alerts-components-integration):**
-  - Desmantelado de la vista monolítica de `/alerts` (de 613 a 80 líneas en `page.tsx`).
-  - Reemplazo 100% por componentes primitivos oficiales (`Card`, `Table`, `Badge`, `Button`, `Select`, `Pagination`, `Skeleton`, `Callout`).
-  - Adaptador HTTP `src/services/alerts.service.ts` conmutando por `NEXT_PUBLIC_API_URL` a `/api/v1/alerts` y fallback local mock con latencia de red.
-  - Custom hook `useAlertsData` con filtros reactivos, paginación oficial y exportación RFC 4180 (CSV/JSON).
-  - Cobertura de tests unitarios en Vitest (29 tests aprobados, 0 errores, 0 advertencias).
-- **Rutas en Desarrollo:** Trazabilidad de Producto `/products/[id]`.
+- **Spec 002 Finalizada:** Alineación milimétrica de grilla gráfica y franja semafórica en Dashboard.
+- **Spec 003 Finalizada:** Módulo de Alertas (`/alerts`) modularizado con servicios y exportación.
+- **Spec 004 Finalizada (traceability-architecture):**
+  - Desmantelado del archivo monolítico de trazabilidad (de 694 a 78 líneas en `page.tsx`).
+  - Subcomponentes modulares en `src/components/traceability/` (~40-90 líneas) usando primitivos oficiales.
+  - Botón "Exportar CSV" situado en la cabecera de la tabla de observaciones (ámbito directo de datos).
+  - Servicio `traceability.service.ts` desacoplado con soporte `NEXT_PUBLIC_API_URL` y fallback a mock.
+  - Custom hook `useTraceabilityData` con control de concurrencia y filtros.
+  - Suite de 54 pruebas unitarias en Vitest con 100% de éxito.
 
 ## Decisiones y Justificación Técnica
 
-- **Alineación Declarativa:** Coordenadas declarativas directas coincidentes con el eje X categórico (`shortDate`).
+- **Cohesión de Exportación:** Los botones de exportar residen en la cabecera de la tabla cuando exportan exclusivamente sus filas, y en la cabecera de la página cuando exportan la vista global.
 - **Conmutación Transparente de API:** Evaluación de `NEXT_PUBLIC_API_URL` para conmutar directamente al endpoint real sin tocar código de UI.
-- **Técnica resolvedQueryKey:** Derivación limpia de `isLoading` en custom hooks evitando llamadas redundantes a `setState` en `useEffect`.
-- **Orquestación Multiagente:** Coordinador autónomo riguroso en TDD y auditoría formal independiente vía `sdd-reviewer`.
+- **Orquestación Multiagente:** Coordinador autónomo `sdd-coordinator` riguroso en TDD y auditoría formal independiente vía `sdd-reviewer`.
 
 ## Aprendizajes y Errores a Evitar
 
@@ -31,4 +29,4 @@ Memoria viva del proyecto entre sesiones (Máximo ~50 líneas).
 
 ## Próximos Pasos en Cola
 
-- Iniciar la siguiente especificación SDD para el módulo de Trazabilidad de Producto (`/products/[id]`).
+- Validar la integración con el backend cuando esté desplegado configurando `NEXT_PUBLIC_API_URL`.

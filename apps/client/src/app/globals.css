@@ -26,7 +26,7 @@
   --secondary: #0f172a; /* Slate 900 */
   --secondary-foreground: #ffffff;
 
-  /* Semáforo Forense de Calidad de Datos (RN-04 / HU-48) */
+  /* Semáforo Forense de Calidad de Datos */
   --status-valid: #16a34a; /* Green 600 */
   --status-valid-bg: #f0fdf4; /* Green 50 */
   --status-valid-border: #bbf7d0; /* Green 200 */
@@ -38,7 +38,7 @@
   --status-danger-border: #fecaca; /* Red 200 */
   --status-muted: #94a3b8; /* Slate 400 */
 
-  /* Hitos Económicos y de Mercado (HU-38, RN-05) */
+  /* Hitos Económicos y de Mercado */
   --hito-reduflacion: #7c3aed; /* Purple 600 */
   --hito-reduflacion-bg: #faf5ff; /* Purple 50 */
   --hito-reduflacion-border: #e9d5ff; /* Purple 200 */
