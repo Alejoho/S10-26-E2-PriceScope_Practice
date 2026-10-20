@@ -14,6 +14,7 @@ export interface ExportButtonProps extends Omit<ButtonProps, "onClick"> {
 /**
  * Botón unificado de exportación de datos (CSV / JSON) con micro-interacción
  * de retroalimentación táctil animada (icono de check y estado de éxito durante 2 segundos).
+ * Estandarizado con altura h-10 por defecto en todas las tablas y secciones.
  */
 export function ExportButton({
   onExport,
@@ -22,7 +23,7 @@ export function ExportButton({
   disabled,
   className = "",
   variant = "secondary",
-  size = "sm",
+  size = "default",
   ...props
 }: ExportButtonProps) {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -42,7 +43,7 @@ export function ExportButton({
       size={size}
       onClick={handleClick}
       disabled={disabled}
-      className={`gap-1.5 text-xs shadow-2xs transition-all ${className}`}
+      className={`h-10 gap-1.5 px-3.5 text-xs shadow-2xs transition-all ${className}`}
       {...props}
     >
       {isSuccess ? (

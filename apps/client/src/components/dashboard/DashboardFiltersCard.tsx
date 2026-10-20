@@ -43,7 +43,7 @@ interface DashboardFiltersCardProps {
 }
 
 /**
- * Barra de filtros dinámicos del Dashboard con alineación estricta (space-x-2)
+ * Barra de filtros dinámicos del Dashboard con alineación compacta a la izquierda (gap-2)
  * y botón unificado de exportación posicionado a la derecha.
  */
 export function DashboardFiltersCard({
@@ -64,9 +64,9 @@ export function DashboardFiltersCard({
   return (
     <Card className="p-5">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        {/* Filtros organizados con espaciado uniforme space-x-2 */}
+        {/* Controles de filtro con gap-2 compacto sin anchos excesivos */}
         <div className="flex flex-wrap items-end gap-2">
-          <div className="w-80">
+          <div className="w-auto">
             <div className="mb-1 flex items-center justify-between">
               <Label htmlFor="date-range-filter">Rango Temporal de Análisis</Label>
             </div>
@@ -76,15 +76,20 @@ export function DashboardFiltersCard({
               onChange={onDateRangeChange}
               presets={getPriceScopePresets()}
               placeholder="Seleccionar ventana temporal"
+              className="w-auto min-w-0"
             />
           </div>
 
-          <div>
+          <div className="w-auto">
             <Label htmlFor="store-filter" className="mb-1 block">
               Cadena / Tienda
             </Label>
             <Select name="store" value={selectedStore} onValueChange={onStoreChange}>
-              <SelectTrigger id="store-filter" className="min-w-40" aria-label="Cadena / Tienda">
+              <SelectTrigger
+                id="store-filter"
+                className="w-auto min-w-0"
+                aria-label="Cadena / Tienda"
+              >
                 <SelectValue placeholder="Seleccionar tienda" />
               </SelectTrigger>
               <SelectContent>
@@ -100,14 +105,14 @@ export function DashboardFiltersCard({
             </Select>
           </div>
 
-          <div>
+          <div className="w-auto">
             <Label htmlFor="category-filter" className="mb-1 block">
               Categoría Canónica
             </Label>
             <Select name="category" value={selectedCategory} onValueChange={onCategoryChange}>
               <SelectTrigger
                 id="category-filter"
-                className="min-w-40"
+                className="w-auto min-w-0"
                 aria-label="Categoría Canónica"
               >
                 <SelectValue placeholder="Seleccionar categoría" />
@@ -123,7 +128,7 @@ export function DashboardFiltersCard({
             </Select>
           </div>
 
-          <div>
+          <div className="w-auto">
             <Label htmlFor="currency-filter" className="mb-1 block">
               Moneda de Cálculo
             </Label>
@@ -134,7 +139,7 @@ export function DashboardFiltersCard({
             >
               <SelectTrigger
                 id="currency-filter"
-                className="min-w-40"
+                className="w-auto min-w-0"
                 aria-label="Moneda de Cálculo"
               >
                 <SelectValue placeholder="Seleccionar moneda" />
@@ -147,7 +152,7 @@ export function DashboardFiltersCard({
             </Select>
           </div>
 
-          <div>
+          <div className="w-auto">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -173,7 +178,6 @@ export function DashboardFiltersCard({
               onExport={onExportCsv}
               disabled={isExportDisabled}
               aria-label="Exportar CSV"
-              className="h-10 px-4"
             />
           </div>
         )}
