@@ -1,7 +1,9 @@
+import { RiLineChartLine } from "@remixicon/react";
 import { LineChart, type ChartReferenceArea } from "@/components/charts/line-chart";
 import { Tracker, type TrackerBlockProps } from "@/components/charts/tracker";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { formatDashboardCurrencyValue, type DashboardChartRow } from "@/lib/dashboard";
@@ -107,6 +109,13 @@ export function DashboardEvolutionSection({
             <Skeleton className="h-4 w-44" />
           </div>
         </div>
+      ) : chartData.length === 0 ? (
+        <EmptyState
+          title="Sin datos de cotización"
+          description="No se registraron variaciones de precios para el rango temporal o filtros seleccionados."
+          icon={RiLineChartLine}
+          className="py-16"
+        />
       ) : (
         <div className="space-y-2">
           <div>

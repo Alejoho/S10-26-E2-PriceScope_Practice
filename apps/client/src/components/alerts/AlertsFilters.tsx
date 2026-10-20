@@ -48,7 +48,7 @@ interface FilterSelectProps {
 
 function FilterSelect({ label, value, onChange, options, disabled }: FilterSelectProps) {
   return (
-    <div className="w-48 sm:w-56">
+    <div className="w-full sm:w-52 md:w-56">
       <Label className="mb-1 block text-xs font-medium text-slate-700">{label}</Label>
       <Select value={value} onValueChange={onChange} disabled={disabled}>
         <SelectTrigger className="w-full">
@@ -116,7 +116,7 @@ export function AlertsFilters({
             options={STORE_OPTIONS}
             disabled={disabled}
           />
-          <div>
+          <div className="w-full sm:w-auto">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
@@ -124,7 +124,7 @@ export function AlertsFilters({
                   size="default"
                   onClick={onReset}
                   disabled={disabled}
-                  className="h-10 border border-slate-200 bg-slate-50 px-3.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  className="h-10 w-full border border-slate-200 bg-slate-50 px-3.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 sm:w-auto"
                 >
                   <RiRefreshLine className="size-3.5 text-slate-500" />
                   <span>Limpiar</span>

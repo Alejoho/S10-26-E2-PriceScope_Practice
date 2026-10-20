@@ -38,7 +38,7 @@ export function LegalNoticeModal({ isCollapsed = false }: LegalNoticeModalProps)
             type="button"
             onClick={() => setOpen(true)}
             aria-label="Aviso Legal y Condiciones"
-            className="flex size-10 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-200 focus:outline-hidden"
+            className="flex size-10 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-slate-800 hover:text-slate-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
           >
             <RiScales3Line className="size-4.5" aria-hidden="true" />
           </button>
@@ -52,7 +52,7 @@ export function LegalNoticeModal({ isCollapsed = false }: LegalNoticeModalProps)
     <button
       type="button"
       onClick={() => setOpen(true)}
-      className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:bg-slate-800/80 hover:text-slate-200 focus:outline-hidden"
+      className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:bg-slate-800/80 hover:text-slate-200 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
     >
       <RiScales3Line className="size-4 shrink-0 text-slate-400" aria-hidden="true" />
       <span className="truncate">Aviso Legal y Condiciones</span>

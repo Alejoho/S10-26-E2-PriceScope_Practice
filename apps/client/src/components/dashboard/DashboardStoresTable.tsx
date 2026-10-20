@@ -1,6 +1,7 @@
 import { RiStore2Line } from "@remixicon/react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { StatusDot } from "@/components/ui/StatusDot";
 import {
@@ -67,64 +68,77 @@ export function DashboardStoresTable({
           </TableRow>
         </TableHeader>
         <TableBody className="divide-y divide-slate-100 font-medium">
-          {isLoading
-            ? Array.from({ length: 4 }).map((_, index) => (
-                <TableRow key={index}>
-                  <TableCell className="min-w-48 px-6 py-3.5">
-                    <Skeleton className="mb-1 h-4 w-32" />
-                    <Skeleton className="h-3 w-20" />
-                  </TableCell>
-                  <TableCell className="min-w-36 px-6 py-3.5">
-                    <Skeleton className="h-4 w-18" />
-                  </TableCell>
-                  <TableCell className="min-w-32 px-6 py-3.5">
-                    <Skeleton className="h-4 w-14" />
-                  </TableCell>
-                  <TableCell className="min-w-32 px-6 py-3.5">
-                    <Skeleton className="h-4 w-20" />
-                  </TableCell>
-                  <TableCell className="min-w-36 px-6 py-3.5">
-                    <Skeleton className="h-5 w-28 rounded-md" />
-                  </TableCell>
-                  <TableCell className="min-w-32 px-6 py-3.5">
-                    <Skeleton className="h-4 w-16" />
-                  </TableCell>
-                </TableRow>
-              ))
-            : rows.map((row) => (
-                <TableRow key={row.id} className="hover:bg-slate-50/60">
-                  <TableCell className="min-w-48 px-6 py-3.5">
-                    <p className="font-bold text-slate-900">{row.name}</p>
-                    <p className="text-[10px] text-slate-400">{row.tag}</p>
-                  </TableCell>
-                  <TableCell className="min-w-36 px-6 py-3.5 font-bold text-slate-900 tabular-nums">
-                    {row.basketCost}
-                  </TableCell>
-                  <TableCell className="min-w-32 px-6 py-3.5 font-bold text-rose-600 tabular-nums">
-                    {row.monthlyVariation}
-                  </TableCell>
-                  <TableCell className="min-w-32 px-6 py-3.5 text-slate-700 tabular-nums">
-                    {row.skusCount} SKUs
-                  </TableCell>
-                  <TableCell className="min-w-36 px-6 py-3.5">
-                    <Badge variant={row.statusVariant}>
-                      <StatusDot
-                        variant={
-                          row.statusVariant === "success"
-                            ? "emerald"
-                            : row.statusVariant === "warning"
-                              ? "amber"
-                              : "rose"
-                        }
-                      />
-                      <span>{row.healthLabel}</span>
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="min-w-32 px-6 py-3.5 text-slate-500 tabular-nums">
-                    {row.syncTimeArt}
-                  </TableCell>
-                </TableRow>
-              ))}
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, index) => (
+              <TableRow key={index}>
+                <TableCell className="min-w-48 px-6 py-3.5">
+                  <Skeleton className="mb-1 h-4 w-32" />
+                  <Skeleton className="h-3 w-20" />
+                </TableCell>
+                <TableCell className="min-w-36 px-6 py-3.5">
+                  <Skeleton className="h-4 w-18" />
+                </TableCell>
+                <TableCell className="min-w-32 px-6 py-3.5">
+                  <Skeleton className="h-4 w-14" />
+                </TableCell>
+                <TableCell className="min-w-32 px-6 py-3.5">
+                  <Skeleton className="h-4 w-20" />
+                </TableCell>
+                <TableCell className="min-w-36 px-6 py-3.5">
+                  <Skeleton className="h-5 w-28 rounded-md" />
+                </TableCell>
+                <TableCell className="min-w-32 px-6 py-3.5">
+                  <Skeleton className="h-4 w-16" />
+                </TableCell>
+              </TableRow>
+            ))
+          ) : rows.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={6} className="p-0">
+                <EmptyState
+                  title="No se encontraron tiendas"
+                  description="No existen datos de auditoría para los criterios seleccionados."
+                  icon={RiStore2Line}
+                  className="py-12"
+                />
+              </TableCell>
+            </TableRow>
+          ) : (
+            rows.map((row) => (
+              <TableRow key={row.id} className="hover:bg-slate-50/60">
+                <TableCell className="min-w-48 px-6 py-3.5">
+                  <p className="font-bold text-slate-900">{row.name}</p>
+                  <p className="text-[10px] text-slate-400">{row.tag}</p>
+                </TableCell>
+                <TableCell className="min-w-36 px-6 py-3.5 font-bold text-slate-900 tabular-nums">
+                  {row.basketCost}
+                </TableCell>
+                <TableCell className="min-w-32 px-6 py-3.5 font-bold text-rose-600 tabular-nums">
+                  {row.monthlyVariation}
+                </TableCell>
+                <TableCell className="min-w-32 px-6 py-3.5 text-slate-700 tabular-nums">
+                  {row.skusCount} SKUs
+                </TableCell>
+                <TableCell className="min-w-36 px-6 py-3.5">
+                  <Badge variant={row.statusVariant}>
+                    <StatusDot
+                      variant={
+                        row.statusVariant === "success"
+                          ? "emerald"
+                          : row.statusVariant === "warning"
+                            ? "amber"
+                            : "rose"
+                      }
+                    />
+                    <span>{row.healthLabel}</span>
+                  </Badge>
+                </TableCell>
+                <TableCell className="min-w-32 px-6 py-3.5 text-slate-500 tabular-nums">
+                  {row.syncTimeArt}
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </Card>

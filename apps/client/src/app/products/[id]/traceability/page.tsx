@@ -48,7 +48,7 @@ export default function TraceabilityPage({ params }: TraceabilityPageProps) {
   const latestObservation = observations[0] ?? null;
 
   return (
-    <main className="mx-auto max-w-7xl space-y-6 p-6 sm:p-8">
+    <main className="mx-auto max-w-7xl space-y-6 p-4 sm:p-6 lg:p-8">
       <TraceabilityHeader productId={productId} />
 
       {error && (
