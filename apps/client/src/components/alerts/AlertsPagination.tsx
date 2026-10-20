@@ -14,7 +14,7 @@ export interface AlertsPaginationProps {
 }
 
 /**
- * Paginador para la tabla de alertas de inflación que reutiliza el componente transversal DataTablePagination.
+ * Componente de paginación para la tabla de alertas de inflación que reutiliza DataTablePagination.
  */
 export function AlertsPagination({
   currentPage,
