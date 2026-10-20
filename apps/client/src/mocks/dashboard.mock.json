@@ -216,7 +216,7 @@
         "estado_dato": "AGOTADO",
         "cotizacion_aplicada": null,
         "cotizacion_aproximada": false,
-        "motivo": "Quiebre de stock en tienda (RN-04)"
+        "motivo": "Quiebre de stock en tienda"
       },
       {
         "timestamp_utc": "2026-10-01T00:00:00Z",
@@ -226,7 +226,7 @@
         "estado_dato": "AGOTADO",
         "cotizacion_aplicada": null,
         "cotizacion_aproximada": false,
-        "motivo": "Quiebre de stock en tienda (RN-04)"
+        "motivo": "Quiebre de stock en tienda"
       },
       {
         "timestamp_utc": "2026-10-02T00:00:00Z",
@@ -236,7 +236,7 @@
         "estado_dato": "AGOTADO",
         "cotizacion_aplicada": null,
         "cotizacion_aproximada": false,
-        "motivo": "Quiebre de stock en tienda (RN-04)"
+        "motivo": "Quiebre de stock en tienda"
       },
       {
         "timestamp_utc": "2026-10-03T00:00:00Z",
