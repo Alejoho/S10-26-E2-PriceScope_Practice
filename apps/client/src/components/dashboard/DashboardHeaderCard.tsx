@@ -1,22 +1,11 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { ExportButton } from "@/components/ui/ExportButton";
-
-interface DashboardHeaderCardProps {
-  isLoading: boolean;
-  hasData?: boolean;
-  onExportCsv: () => void;
-}
 
 /**
- * Cabecera ejecutiva del Tablero Macroeconómico con acción de exportación CSV unificada.
+ * Cabecera ejecutiva del Tablero Macroeconómico.
  */
-export function DashboardHeaderCard({
-  isLoading,
-  hasData = true,
-  onExportCsv,
-}: DashboardHeaderCardProps) {
+export function DashboardHeaderCard() {
   return (
     <Card className="flex flex-col justify-between gap-4 p-5 sm:flex-row sm:items-center">
       <div>
@@ -31,15 +20,6 @@ export function DashboardHeaderCard({
         <p className="mt-0.5 text-xs text-slate-500">
           Monitoreo analítico de canasta retail y correlación con divisa (ARS / USD Blue / Oficial)
         </p>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <ExportButton
-          formatLabel="CSV"
-          onExport={onExportCsv}
-          disabled={isLoading || !hasData}
-          aria-label="Exportar CSV"
-        />
       </div>
     </Card>
   );

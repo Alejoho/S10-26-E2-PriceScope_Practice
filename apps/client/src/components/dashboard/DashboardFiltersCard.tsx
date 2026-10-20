@@ -1,11 +1,9 @@
+import type { DateRange } from "react-day-picker";
 import { RiRefreshLine } from "@remixicon/react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  DateRangePicker,
-  getPriceScopePresets,
-  type DateRange,
-} from "@/components/ui/DateRangePicker";
+import { DateRangePicker } from "@/components/ui/DateRangePicker";
+import { ExportButton } from "@/components/ui/ExportButton";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -15,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { getPriceScopePresets } from "@/lib/dateRangeUtils";
 import type { Moneda } from "@/types/api";
 
 export interface StoreOption {
@@ -37,12 +36,15 @@ interface DashboardFiltersCardProps {
   selectedCurrency: Moneda;
   onCurrencyChange: (currency: Moneda) => void;
   onResetFilters: () => void;
+  onExportCsv?: () => void;
+  isExportDisabled?: boolean;
   stores?: StoreOption[];
   categories?: CategoryOption[];
 }
 
 /**
- * Barra de filtros dinámicos del Dashboard (Rango de fechas, Tienda, Categoría y Moneda).
+ * Barra de filtros dinámicos del Dashboard con alineación a la izquierda
+ * y botón unificado de exportación posicionado a la derecha.
  */
 export function DashboardFiltersCard({
   dateRange,
@@ -54,32 +56,35 @@ export function DashboardFiltersCard({
   selectedCurrency,
   onCurrencyChange,
   onResetFilters,
+  onExportCsv,
+  isExportDisabled = false,
   stores = [],
   categories = [],
 }: DashboardFiltersCardProps) {
   return (
     <Card className="p-5">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="max-w-105 min-w-80 flex-1">
-          <div className="mb-1 flex items-center justify-between">
-            <Label htmlFor="date-range-filter">Rango Temporal de Análisis</Label>
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        {/* Controles de filtro y botón de Limpiar/Reset alineados a la izquierda */}
+        <div className="flex flex-wrap items-end gap-3.5">
+          <div className="min-w-72 flex-1 sm:min-w-80">
+            <div className="mb-1 flex items-center justify-between">
+              <Label htmlFor="date-range-filter">Rango Temporal de Análisis</Label>
+            </div>
+            <DateRangePicker
+              id="date-range-filter"
+              value={dateRange}
+              onChange={onDateRangeChange}
+              presets={getPriceScopePresets()}
+              placeholder="Seleccionar ventana temporal"
+            />
           </div>
-          <DateRangePicker
-            id="date-range-filter"
-            value={dateRange}
-            onChange={onDateRangeChange}
-            presets={getPriceScopePresets()}
-            placeholder="Seleccionar ventana temporal"
-          />
-        </div>
 
-        <div className="flex flex-wrap items-end gap-3">
           <div>
             <Label htmlFor="store-filter" className="mb-1 block">
               Cadena / Tienda
             </Label>
             <Select name="store" value={selectedStore} onValueChange={onStoreChange}>
-              <SelectTrigger id="store-filter" className="min-w-46" aria-label="Cadena / Tienda">
+              <SelectTrigger id="store-filter" className="min-w-44" aria-label="Cadena / Tienda">
                 <SelectValue placeholder="Seleccionar tienda" />
               </SelectTrigger>
               <SelectContent>
@@ -102,7 +107,7 @@ export function DashboardFiltersCard({
             <Select name="category" value={selectedCategory} onValueChange={onCategoryChange}>
               <SelectTrigger
                 id="category-filter"
-                className="min-w-48"
+                className="min-w-44"
                 aria-label="Categoría Canónica"
               >
                 <SelectValue placeholder="Seleccionar categoría" />
@@ -129,7 +134,7 @@ export function DashboardFiltersCard({
             >
               <SelectTrigger
                 id="currency-filter"
-                className="min-w-46"
+                className="min-w-44"
                 aria-label="Moneda de Cálculo"
               >
                 <SelectValue placeholder="Seleccionar moneda" />
@@ -159,6 +164,19 @@ export function DashboardFiltersCard({
             </Tooltip>
           </div>
         </div>
+
+        {/* Botón unificado de exportar alineado a la derecha */}
+        {onExportCsv && (
+          <div className="shrink-0 self-end lg:self-end">
+            <ExportButton
+              formatLabel="CSV"
+              onExport={onExportCsv}
+              disabled={isExportDisabled}
+              aria-label="Exportar CSV"
+              className="h-10 px-4"
+            />
+          </div>
+        )}
       </div>
     </Card>
   );
