@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { RiAlertLine } from "@remixicon/react";
+import { RiAlertLine, RiSearchEyeLine } from "@remixicon/react";
 import { Badge } from "@/components/ui/badge";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { getRateBadgeInfo } from "@/lib/alerts/severity";
@@ -67,10 +67,10 @@ export function AlertTableRowItem({ row }: AlertTableRowItemProps) {
       <TableCell className="px-4 py-3.5 text-right">
         <Link
           href={`/products/${row.canonicalProductId}/traceability`}
-          className="inline-flex cursor-pointer items-center gap-1 rounded-lg border border-blue-200/80 bg-blue-50 px-3.5 py-1.5 text-xs font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800"
+          className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-blue-200/80 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 transition-colors hover:bg-blue-100 hover:text-blue-800 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
         >
           <span>Auditar</span>
-          <span>&rarr;</span>
+          <RiSearchEyeLine className="size-3.5" aria-hidden="true" />
         </Link>
       </TableCell>
     </TableRow>

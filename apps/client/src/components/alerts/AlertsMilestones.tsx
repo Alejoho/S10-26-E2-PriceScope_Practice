@@ -3,6 +3,7 @@ import { RiArrowDownSLine, RiArrowUpSLine, RiHistoryLine } from "@remixicon/reac
 import { Badge } from "@/components/ui/badge";
 import { Callout } from "@/components/ui/callout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { AlertMilestoneItem } from "@/lib/alerts/types";
 
@@ -58,53 +59,64 @@ export function AlertsMilestones({
 
       <CardContent>
         <div className="grid grid-cols-1 gap-3.5 md:grid-cols-3">
-          {isLoading
-            ? Array.from({ length: 3 }).map((_, idx) => (
-                <div
-                  key={`milestone-skeleton-${idx}`}
-                  className="flex flex-col justify-between space-y-3 rounded-lg border border-slate-200/80 bg-slate-50/80 p-3.5"
-                >
-                  <div className="flex items-center justify-between">
-                    <Skeleton className="h-4 w-28 rounded-sm" />
-                    <Skeleton className="h-3 w-16" />
-                  </div>
-                  <Skeleton className="h-4 w-3/4" />
-                  <Skeleton className="h-10 w-full" />
-                  <div className="flex items-center justify-between border-t border-slate-200/60 pt-2.5">
-                    <Skeleton className="h-3 w-24" />
-                    <Skeleton className="h-3 w-20" />
-                  </div>
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, idx) => (
+              <div
+                key={`milestone-skeleton-${idx}`}
+                className="flex flex-col justify-between space-y-3 rounded-lg border border-slate-200/80 bg-slate-50/80 p-3.5"
+              >
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-4 w-28 rounded-sm" />
+                  <Skeleton className="h-3 w-16" />
                 </div>
-              ))
-            : milestones.map((item) => (
-                <Callout
-                  key={item.id}
-                  title={item.title}
-                  variant={item.variant}
-                  badge={
-                    <Badge
-                      variant={item.variant}
-                      className="rounded-sm px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase"
-                    >
-                      {item.tag}
-                    </Badge>
-                  }
-                  meta={
-                    <span className="font-mono text-[10px] font-semibold text-slate-500">
-                      {item.date}
-                    </span>
-                  }
-                  className="flex flex-col justify-between"
-                >
-                  <p className="mt-1 text-[11px] leading-relaxed text-slate-600">
-                    {item.description}
-                  </p>
-                  <div className="mt-3 flex items-center justify-between border-t border-slate-200/60 pt-2.5 text-[10px] font-medium text-slate-700">
-                    <span>{item.impactScope}</span>
-                    <span className="font-semibold">{item.affectedSkus}</span>
-                  </div>
-                </Callout>
-              ))}
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-10 w-full" />
+                <div className="flex items-center justify-between border-t border-slate-200/60 pt-2.5">
+                  <Skeleton className="h-3 w-24" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
+              </div>
+            ))
+          ) : milestones.length === 0 ? (
+            <div className="col-span-full">
+              <EmptyState
+                title="Sin hitos registrados"
+                description="No se detectaron eventos macroeconómicos ni alertas de reduflación para los filtros activos."
+                icon={RiHistoryLine}
+                className="py-10"
+              />
+            </div>
+          ) : (
+            milestones.map((item) => (
+              <Callout
+                key={item.id}
+                title={item.title}
+                variant={item.variant}
+                badge={
+                  <Badge
+                    variant={item.variant}
+                    className="rounded-sm px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase"
+                  >
+                    {item.tag}
+                  </Badge>
+                }
+                meta={
+                  <span className="font-mono text-[10px] font-semibold text-slate-500">
+                    {item.date}
+                  </span>
+                }
+                className="flex flex-col justify-between"
+              >
+                <p className="mt-1 text-[11px] leading-relaxed text-slate-600">
+                  {item.description}
+                </p>
+                <div className="mt-3 flex items-center justify-between border-t border-slate-200/60 pt-2.5 text-[10px] font-medium text-slate-700">
+                  <span>{item.impactScope}</span>
+                  <span className="font-semibold">{item.affectedSkus}</span>
+                </div>
+              </Callout>
+            ))
+          )}
         </div>
       </CardContent>
     </Card>
