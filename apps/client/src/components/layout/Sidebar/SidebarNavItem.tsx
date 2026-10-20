@@ -48,7 +48,7 @@ export function SidebarNavItem({
         aria-label={fullLabel}
         title={isCollapsed ? fullLabel : undefined}
         className={cx(
-          "relative flex h-10 w-full items-center overflow-hidden rounded-lg text-xs font-medium whitespace-nowrap transition-colors",
+          "relative flex h-10 w-full items-center overflow-hidden rounded-lg text-xs font-medium whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none",
           isActive
             ? "border border-slate-700/80 bg-slate-800/90 font-semibold text-white shadow-2xs"
             : "text-slate-400 hover:bg-slate-800/50 hover:text-slate-200"
