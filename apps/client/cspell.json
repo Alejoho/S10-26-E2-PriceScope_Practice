@@ -129,6 +129,8 @@
     "almacen",
     "lacteos",
     "descargable",
-    "modularizado"
+    "modularizado",
+    "formateadores",
+    "renderizado"
   ]
 }
