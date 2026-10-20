@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,9 +18,9 @@ import { StatusDot } from "@/components/ui/StatusDot";
 import { useSidebar } from "@/hooks/useSidebar";
 
 export interface HeaderProps {
-  /** Etiqueta de hora de la última sincronización exitosa (HU-49) */
+  /** Etiqueta de hora de la última sincronización exitosa */
   lastUpdatedLabel?: string;
-  /** Cantidad de tiendas piloto activas en el sistema (HU-01) */
+  /** Cantidad de tiendas piloto activas en el sistema */
   monitoredStoresCount?: number;
   /** Etiqueta regional del entorno analítico */
   regionLabel?: string;
