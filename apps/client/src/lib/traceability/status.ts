@@ -1,10 +1,11 @@
-﻿import type { BadgeProps } from "@/components/ui/badge";
+import type { BadgeProps } from "@/components/ui/badge";
 import type { EstadoDato } from "@/types/api";
 
 export interface StatusBadgeConfig {
   variant: NonNullable<BadgeProps["variant"]>;
   label: string;
   description: string;
+  tooltip: string;
 }
 
 const STATUS_CONFIG_MAP: Record<EstadoDato, StatusBadgeConfig> = {
@@ -12,21 +13,25 @@ const STATUS_CONFIG_MAP: Record<EstadoDato, StatusBadgeConfig> = {
     variant: "success",
     label: "Dato Válido",
     description: "Captura exitosa y verificada con consistencia matemática.",
+    tooltip: "Captura exitosa y verificada con consistencia matemática.",
   },
   AGOTADO: {
     variant: "warning",
     label: "Agotado",
     description: "Publicación activa pero producto sin stock disponible.",
+    tooltip: "Publicación activa pero producto sin stock disponible.",
   },
   ERROR_CAPTURA: {
     variant: "error",
     label: "Error Captura",
     description: "Fallo durante la extracción HTTP / 5xx o timeout del scraper.",
+    tooltip: "Fallo durante la extracción HTTP / 5xx o timeout del scraper.",
   },
   SIN_DATO: {
     variant: "neutral",
     label: "Sin Dato",
     description: "Ausencia de captura o discontinuidad temporal.",
+    tooltip: "Ausencia de captura o discontinuidad temporal.",
   },
 };
 
@@ -42,6 +47,7 @@ export function getStatusBadgeConfig(status: EstadoDato | string): StatusBadgeCo
     variant: "neutral",
     label: status || "Sin Dato",
     description: "Estado no clasificado.",
+    tooltip: "Estado no clasificado.",
   };
 }
 

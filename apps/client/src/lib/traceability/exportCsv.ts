@@ -32,7 +32,7 @@ export function generateTraceabilityCsv(observations: ObservacionTrazabilidadIte
   const rows = observations.map((obs) => {
     const isApprox = obs.cotizacion_aproximada ? "SÍ" : "NO";
     const statusLabel = getStatusLabel(obs.estado_dato);
-    const alias = obs.alias_producto ?? obs.nombre_en_tienda ?? "";
+    const alias = obs.alias_producto ?? "";
 
     return [
       escapeCsvField(formatTimestampToART(obs.timestamp_utc)),
