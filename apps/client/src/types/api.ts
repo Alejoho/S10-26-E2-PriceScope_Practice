@@ -146,3 +146,64 @@ export interface AlertsQueryParams {
   categoria_id?: string | null;
   severidad?: string;
 }
+
+export type UnidadMedida = "kg" | "L" | "unidad";
+
+export interface ProductoCanonicoDetalle {
+  id: string;
+  slug: string;
+  nombre_normalizado: string;
+  marca: string;
+  modelo: string | null;
+  categoria: string;
+  contenido_neto_valor: number;
+  contenido_neto_unidad: UnidadMedida;
+  pack: string;
+}
+
+export interface ObservacionTrazabilidadItem {
+  timestamp_utc: string;
+  tienda_id: string;
+  tienda_nombre: string;
+  url_origen: string;
+  sku_tienda: string | null;
+  alias_producto: string;
+  precio_regular: number | null;
+  precio_promocional: number | null;
+  precio_por_unidad: number | null;
+  unidad_medida: UnidadMedida;
+  precio_usd: number | null;
+  estado_dato: EstadoDato;
+  cotizacion_aplicada: number | null;
+  cotizacion_aproximada: boolean;
+  fuente_cotizacion: string | null;
+  motivo_faltante?: string | null;
+  /** Variación porcentual diaria opcional calculada o provista por el backend */
+  variacion_diaria_pct?: number | null;
+}
+
+export interface HitoReduflacionItem {
+  id: string;
+  timestamp_utc: string;
+  tipo: "REDUFLACION";
+  titulo: string;
+  descripcion: string;
+  impacto: string;
+  contenido_anterior_valor: number;
+  contenido_nuevo_valor: number;
+  unidad_medida: UnidadMedida;
+  variacion_gramaje_pct: number;
+  salto_precio_unitario_pct: number;
+}
+
+export interface TraceabilityResponse {
+  producto: ProductoCanonicoDetalle;
+  hitos_reduflacion?: HitoReduflacionItem[];
+  historico_observaciones: ObservacionTrazabilidadItem[];
+}
+
+export interface TraceabilityQueryParams {
+  tienda_id?: string | null;
+  fecha_desde?: string | null;
+  fecha_hasta?: string | null;
+}
