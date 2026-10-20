@@ -1,11 +1,11 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { RiArrowLeftSLine, RiArrowRightSLine, RiMoreFill } from "@remixicon/react";
 
 import { buttonVariants, type ButtonProps } from "@/components/ui/button";
 import { cx } from "@/lib/utils";
 
 /**
- * Contenedor de navegación semántica oficial de Shadcn UI para controles de paginación (HU-46).
+ * Contenedor de navegación semántica oficial de Shadcn UI para controles de paginación.
  */
 export function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (

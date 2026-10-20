@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { tv, type VariantProps } from "tailwind-variants";
 
 import { cx } from "@/lib/utils";
@@ -38,7 +38,7 @@ export interface StatusDotProps
 }
 
 /**
- * Indicador puntual de estado operativo o frescura de datos (RN-04 / HU-49).
+ * Indicador puntual de estado operativo o frescura de datos.
  * Soporta animación suave (`pulse`) o radar en vivo (`ping`) reutilizable en Sidebar, Header y tablas.
  */
 export function StatusDot({
