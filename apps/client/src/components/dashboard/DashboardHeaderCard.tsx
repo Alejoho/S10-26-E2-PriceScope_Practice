@@ -1,7 +1,7 @@
-import { RiDownload2Line } from "@remixicon/react";
+import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { ExportButton } from "@/components/ui/ExportButton";
 
 interface DashboardHeaderCardProps {
   isLoading: boolean;
@@ -10,7 +10,7 @@ interface DashboardHeaderCardProps {
 }
 
 /**
- * Cabecera ejecutiva del Tablero Macroeconómico con acción de exportación CSV.
+ * Cabecera ejecutiva del Tablero Macroeconómico con acción de exportación CSV unificada.
  */
 export function DashboardHeaderCard({
   isLoading,
@@ -34,15 +34,12 @@ export function DashboardHeaderCard({
       </div>
 
       <div className="flex items-center gap-2">
-        <Button
-          variant="secondary"
-          size="default"
+        <ExportButton
+          formatLabel="CSV"
+          onExport={onExportCsv}
           disabled={isLoading || !hasData}
-          onClick={onExportCsv}
-        >
-          <RiDownload2Line className="size-3.5 text-slate-500" />
-          <span>Exportar CSV</span>
-        </Button>
+          aria-label="Exportar CSV"
+        />
       </div>
     </Card>
   );
